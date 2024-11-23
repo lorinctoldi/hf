@@ -23,4 +23,20 @@ public class Move {
   private String convertColToChessNotation(int col) {
     return String.valueOf((char) ('a' + col));
   }
+
+  public int getOriginCol() {
+    return this.originCol;
+  }
+
+  public int getOriginRow() {
+    return this.originRow;
+  }
+
+  public int getTargetCol() {
+    return this.targetCol;
+  }
+
+  public int getTargetRow() {
+    return this.targetRow;
+  }
 }

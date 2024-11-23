@@ -8,8 +8,14 @@ import java.awt.*;
 
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
 import menu.MenuController;
+import move.Move;
 import form.FormController;
 import game.GameController;
 
@@ -62,8 +68,59 @@ public class AppController {
     }
 
     public void newGame(String name, int elo) {
-        gameController = new GameController(this, name, elo);
+        gameController = new GameController(this, name, elo, null);
         switchToView(gameController.getView());
+    }
+
+    public void loadGame() {
+        JFileChooser fileChooser = new JFileChooser();
+        int returnValue = fileChooser.showOpenDialog(null);
+
+        if (returnValue == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = fileChooser.getSelectedFile();
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
+                String name = reader.readLine().split(":")[1].trim();
+                int elo = Integer.parseInt(reader.readLine().split(":")[1].trim());
+
+                // Skip "Moves" header
+                reader.readLine();
+
+                // Read the moves
+                ArrayList<Move> moves = new ArrayList<>();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] moveParts = line.split("->");
+                    String[] origin = moveParts[0].split(",");
+                    String[] target = moveParts[1].split(",");
+
+                    int originCol = Integer.parseInt(origin[0]);
+                    int originRow = Integer.parseInt(origin[1]);
+                    int targetCol = Integer.parseInt(target[0]);
+                    int targetRow = Integer.parseInt(target[1]);
+
+                    // Create a move object (you need to define the Move class)
+                    moves.add(new Move(originCol, originRow, targetCol, targetRow));
+                }
+
+                System.out.println("maki moves");
+                for(Move move : moves) {
+                    System.out.println(move);
+                }
+
+                // Now create a new GameController with the loaded data
+
+                gameController = new GameController(this, name, elo, moves);
+                switchToView(gameController.getView());
+                gameController.replayMoves(moves.size()); // Replay the moves
+
+                switchToView(gameController.getView());
+
+            } catch (IOException | NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Hiba történt a játék betöltésekor: " + ex.getMessage(), "Hiba",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 
     public JFrame getFrame() {

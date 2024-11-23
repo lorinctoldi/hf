@@ -24,7 +24,7 @@ public class MenuController {
                     button.addActionListener(e -> appController.showForm());
                     break;
                 case 1:
-                    button.addActionListener(e -> System.out.println("Load Game selected"));
+                    button.addActionListener(e -> appController.loadGame());
                     break;
                 case 2:
                     button.addActionListener(e -> System.exit(0));

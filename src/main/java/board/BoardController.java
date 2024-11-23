@@ -25,6 +25,10 @@ public class BoardController {
         setUpListeners();
     }
 
+    public void resetBoard() {
+        board.initializeBoard();
+    }
+
     public Board getBoard() {
         return board;
     }
@@ -74,18 +78,26 @@ public class BoardController {
         targetCol = point.x / 100;
 
         if (true) {
-            System.out.println("Moved piece to: " + targetRow + "," + targetCol);
-            board.setPiece(targetRow, targetCol, selectedPiece);
-            board.setPiece(selectedRow, selectedCol, null);
-            gameController.addMove(selectedCol, selectedRow, targetCol, targetRow);
-            boardView.updateBoard();
+            performMove(selectedCol, selectedRow, targetCol, targetRow);
         } else {
             System.out.println("Move failed.");
         }
 
         selectedPiece = null;
 
-        resetTileColors(); // Reset tile colors after the move attempt
+        resetTileColors();
+    }
+
+    public void performMove(int originCol, int originRow, int targetCol, int targetRow) {
+        gameController.addMove(originCol, originRow, targetCol, targetRow);
+        selectedPiece = board.getPiece(originRow, originCol);
+
+        board.setPiece(targetRow, targetCol, selectedPiece);
+        board.setPiece(originRow, originCol, null);
+
+        boardView.updateBoard();
+        boardView.repaint();
+        boardView.revalidate();
     }
 
     private void highlightTiles(Color color) {

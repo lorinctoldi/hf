@@ -14,4 +14,12 @@ public class PlayerController {
   public JPanel getView() {
     return playerView;
   }
+
+  public String getName() {
+    return player.getName();
+  }
+
+  public int getElo() {
+    return player.getElo();
+  }
 }

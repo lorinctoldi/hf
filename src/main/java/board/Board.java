@@ -9,6 +9,10 @@ public class Board {
   // private boolean whiteToPlay;
 
   public Board() {
+    initializeBoard();
+  }
+
+  public void initializeBoard() {
     pieces = new ArrayList<>(8);
     for (int row = 0; row < 8; row++) {
       ArrayList<Piece> rowPieces = new ArrayList<>(8);
@@ -25,6 +29,7 @@ public class Board {
     }
     // whiteToPlay = true;
     setupInitialPieces();
+    System.out.println("Board is setup");
   }
 
   private void setupInitialPieces() {
