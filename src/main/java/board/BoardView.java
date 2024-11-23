@@ -3,12 +3,11 @@ package board;
 import javax.swing.*;
 import java.awt.*;
 
-import piece.Piece;
-import piece.PieceView;
+import piece.*;
 
 public class BoardView extends JPanel {
     private Board board;
-    private static final int BOARD_SIZE = 800; // Fixed size of 800x800
+    public static final int BOARD_SIZE = 800; // Fixed size of 800x800
 
     public BoardView(Board board) {
         this.board = board;
@@ -59,10 +58,41 @@ public class BoardView extends JPanel {
         this.setPreferredSize(new Dimension(BOARD_SIZE, BOARD_SIZE));
     }
 
+    public int getTileIndex(JPanel tile) {
+        for (int i = 0; i < this.getComponentCount(); i++) {
+            if (this.getComponent(i) == tile) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
     private void setTileBackground(JPanel tile, int row, int col) {
-        Color lightColor = new Color(222, 227, 230); // Light square color
-        Color darkColor = new Color(140, 162, 173); // Dark square color
-        boolean isLightSquare = (row + col) % 2 == 0; // Alternate between light and dark squares
+        Color lightColor = new Color(222, 227, 230);
+        Color darkColor = new Color(140, 162, 173);
+        boolean isLightSquare = (row + col) % 2 == 0;
         tile.setBackground(isLightSquare ? lightColor : darkColor);
+    }
+
+    public void highlightTiles(Color color) {
+        for (Component comp : this.getComponents()) {
+            comp.setBackground(color);
+        }
+    }
+
+    public void resetTileColors() {
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                JPanel tile = (JPanel) this.getComponent(row * 8 + col);
+                setTileBackground(tile, row, col);
+            }
+        }
+    }
+
+    public void updateBoard() {
+        this.removeAll();
+        initializeBoard();
+        this.revalidate();
+        this.repaint();
     }
 }

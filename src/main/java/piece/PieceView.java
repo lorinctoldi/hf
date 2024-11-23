@@ -6,8 +6,10 @@ import java.net.URL;
 
 public class PieceView extends JPanel {
   private ImageIcon pieceIcon;
+  private Piece piece;
 
   public PieceView(Piece piece) {
+    this.piece = piece;
     loadPieceImage(piece);
     this.setPreferredSize(new Dimension(getWidth(), getHeight()));
     this.setOpaque(false);
@@ -42,5 +44,9 @@ public class PieceView extends JPanel {
       int imgHeight = getHeight();
       g2d.drawImage(img, 0, 0, imgWidth, imgHeight, this);
     }
+  }
+
+  public Piece getPiece() {
+    return piece;
   }
 }
