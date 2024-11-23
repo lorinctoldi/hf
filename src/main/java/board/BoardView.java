@@ -7,32 +7,32 @@ import piece.*;
 
 public class BoardView extends JPanel {
     private Board board;
-    public static final int BOARD_SIZE = 800; // Fixed size of 800x800
+    public static final int BOARD_SIZE = 800; 
 
     public BoardView(Board board) {
         this.board = board;
-        this.setLayout(new GridLayout(8, 8)); // 8x8 grid layout for the chess board
+        this.setLayout(new GridLayout(8, 8)); 
         initializeBoard();
     }
 
     private void initializeBoard() {
-        int tileSize = BOARD_SIZE / 8; // Calculate tile size based on fixed board size
-        int pieceSize = tileSize * 80 / 100; // Piece size will be 80% of tile size
-        int padding = tileSize * 10 / 100; // Padding will be 10% of tile size
+        int tileSize = BOARD_SIZE / 8; 
+        int pieceSize = tileSize * 80 / 100; 
+        int padding = tileSize * 10 / 100; 
 
-        // Create the 8x8 board layout with pieces and labels
+        
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 JPanel tile = new JPanel(null);
-                setTileBackground(tile, row, col); // Set background color of tile
+                setTileBackground(tile, row, col); 
                 Piece piece = board.getPiece(row, col);
                 if (piece != null) {
                     PieceView pieceView = new PieceView(piece);
-                    pieceView.setBounds(padding, padding, pieceSize, pieceSize); // Position the piece
+                    pieceView.setBounds(padding, padding, pieceSize, pieceSize); 
                     tile.add(pieceView);
                 }
 
-                // Add file (a-h) labels along the bottom row
+                
                 if (row == 7) {
                     JLabel fileLabel = new JLabel(Character.toString((char) ('a' + col)));
                     fileLabel.setFont(new Font("Arial", Font.BOLD, 14));
@@ -41,7 +41,7 @@ public class BoardView extends JPanel {
                     tile.add(fileLabel);
                 }
 
-                // Add rank (1-8) labels along the right column
+                
                 if (col == 7) {
                     JLabel rankLabel = new JLabel(Integer.toString(8 - row));
                     rankLabel.setFont(new Font("Arial", Font.BOLD, 14));
@@ -54,7 +54,7 @@ public class BoardView extends JPanel {
             }
         }
 
-        // Set the preferred size of the board to a fixed size
+        
         this.setPreferredSize(new Dimension(BOARD_SIZE, BOARD_SIZE));
     }
 

@@ -1,5 +1,7 @@
 package piece;
 
+import board.Board;
+
 public class Knight implements Piece {
   private Color color;
   private int row;
@@ -22,23 +24,41 @@ public class Knight implements Piece {
 
   @Override
   public int getRow() {
-    return row; // Return the current row
+    return row; 
   }
 
   @Override
   public int getCol() {
-    return col; // Return the current column
+    return col; 
   }
 
   @Override
   public void setRow(int row) {
-    this.row = row; // Return the current row
+    this.row = row; 
   }
 
   @Override
   public void setCol(int col) {
-    this.col = col; // Return the current column
+    this.col = col; 
   }
+
+  @Override
+  public boolean isValidMove(int fromCol, int fromRow, int toCol, int toRow, Board board) {
+    if(fromRow == toRow && fromCol == toCol) {
+      return false;
+    }
+      int rowDiff = Math.abs(toRow - fromRow);
+      int colDiff = Math.abs(toCol - fromCol);
+      boolean isLShapeMove = (rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2);
+
+      Piece targetPiece = board.getPiece(toRow, toCol);
+      if (targetPiece != null && targetPiece.getType() == Piece.PieceType.KING) {
+        return false; 
+      }
+
+      return isLShapeMove && (targetPiece == null || targetPiece.getColor() != this.color);
+  }
+
 
   @Override
   public String toString() {

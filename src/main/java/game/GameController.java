@@ -30,7 +30,7 @@ public class GameController {
     gameView = new GameView(boardController.getView(), playerController.getView(), moveController.getView());
 
     moveController.setMoveClickListener(moveIndex -> {
-      replayMoves(moveIndex); // Replay up to the selected move
+      replayMoves(moveIndex); 
     });
 
     addEventListeners();
@@ -79,11 +79,11 @@ public class GameController {
 
   private void saveGameToFile(File file) {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-        // Write player name and Elo to the file
+        
         writer.write("Player: " + playerController.getName() + "\n");
         writer.write("Elo: " + playerController.getElo() + "\n");
 
-        // Write moves to the file
+        
         writer.write("Moves:\n");
         for (Move move : moveController.getMoves()) {
             writer.write(move.getOriginCol() + "," + move.getOriginRow() + "->" +

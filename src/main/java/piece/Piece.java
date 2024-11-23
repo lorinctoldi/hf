@@ -3,7 +3,7 @@ package piece;
 import board.Board;
 
 public interface Piece {
-  // boolean isValidMove(int fromRow, int fromCol, int toRow, int toCol, Board board);
+  boolean isValidMove(int fromCol, int fromRow, int toCol, int toRow, Board board);
 
   int getRow();
 

@@ -13,6 +13,7 @@ public class BoardController {
     private Board board;
     private BoardView boardView;
     private Piece selectedPiece;
+    
     int selectedRow;
     int selectedCol;
     int targetRow;
@@ -77,7 +78,7 @@ public class BoardController {
         targetRow = point.y / 100;
         targetCol = point.x / 100;
 
-        if (true) {
+        if (isValidMove(selectedCol, selectedRow, targetCol, targetRow)) {
             performMove(selectedCol, selectedRow, targetCol, targetRow);
         } else {
             System.out.println("Move failed.");
@@ -88,12 +89,21 @@ public class BoardController {
         resetTileColors();
     }
 
+    private boolean isValidMove(int originCol, int originRow, int targetCol, int targetRow) {
+        if(board.getTurn() != selectedPiece.getColor()) return false;
+        if(!selectedPiece.isValidMove(originCol, originRow, targetCol, targetRow, board)) return false;
+        return true;
+    }
+
     public void performMove(int originCol, int originRow, int targetCol, int targetRow) {
         gameController.addMove(originCol, originRow, targetCol, targetRow);
         selectedPiece = board.getPiece(originRow, originCol);
 
         board.setPiece(targetRow, targetCol, selectedPiece);
         board.setPiece(originRow, originCol, null);
+        System.out.println(board.getTurn());
+        System.out.println("Changed current turn");
+        board.changeTurn();
 
         boardView.updateBoard();
         boardView.repaint();

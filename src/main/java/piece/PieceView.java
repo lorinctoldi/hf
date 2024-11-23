@@ -20,7 +20,7 @@ public class PieceView extends JPanel {
       pieceIcon = null;
       return;
     }
-    Piece.Color color = piece.getColor(); // Correct usage of the Piece.Color enum
+    Piece.Color color = piece.getColor(); 
     String fileName = color.toString().toLowerCase() + "-" + piece.getType().toString().toLowerCase() + ".png";
     URL imgUrl = getClass().getResource("/images/cburnett/" + fileName);
     if (imgUrl != null) {

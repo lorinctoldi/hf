@@ -12,21 +12,21 @@ public class GameView extends JPanel {
     public GameView(JPanel boardView, JPanel playerView, JScrollPane moveView) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
-        // Add the board view
+        
         add(boardView);
 
-        // Create a vertical container for player and move views
+        
         JPanel sidePanel = new JPanel();
         sidePanel.setMaximumSize(new Dimension(400, 300));
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
-        JComponent topPlayerView = playerView; // Get a new instance or duplicate view
+        JComponent topPlayerView = playerView; 
         sidePanel.add(topPlayerView);
 
-        // Add the move view to the middle
+        
         sidePanel.add(moveView);
 
-        // Add another player view to the bottom
-        JComponent bottomPlayerView = playerView; // Get a new instance or duplicate view
+        
+        JComponent bottomPlayerView = playerView; 
         sidePanel.add(bottomPlayerView);
         setBackground(new Color(22, 21, 19));
         sidePanel.setBackground(new Color(22, 21, 19));
@@ -45,7 +45,7 @@ public class GameView extends JPanel {
         exitButton = new JButton("Kilépés");
         sidePanel.add(exitButton);
 
-        // Add the vertical container to the main panel
+        
         add(sidePanel);
     }
 

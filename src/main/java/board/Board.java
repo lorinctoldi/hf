@@ -6,13 +6,16 @@ import java.util.ArrayList;
 
 public class Board {
   private ArrayList<ArrayList<Piece>> pieces;
-  // private boolean whiteToPlay;
+  
+  private Piece.Color turn;
 
   public Board() {
     initializeBoard();
   }
 
   public void initializeBoard() {
+    this.turn = Piece.Color.WHITE;
+
     pieces = new ArrayList<>(8);
     for (int row = 0; row < 8; row++) {
       ArrayList<Piece> rowPieces = new ArrayList<>(8);
@@ -27,7 +30,7 @@ public class Board {
       }
       pieces.add(rowPieces);
     }
-    // whiteToPlay = true;
+    
     setupInitialPieces();
     System.out.println("Board is setup");
   }
@@ -62,5 +65,13 @@ public class Board {
     if (row >= 0 && row < 8 && col >= 0 && col < 8) {
       pieces.get(row).set(col, piece);
     }
+  }
+
+  public Piece.Color getTurn() {
+    return this.turn;
+  }
+
+  public void changeTurn() {
+    this.turn = (this.turn == Piece.Color.WHITE ? Piece.Color.BLACK : Piece.Color.WHITE);
   }
 }
