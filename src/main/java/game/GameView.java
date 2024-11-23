@@ -6,15 +6,10 @@ import java.awt.*;
 public class GameView extends JPanel {
     private JButton backButton;
 
-    public GameView(String name, int elo) {
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // backButton = new JButton("Vissza");
-        // backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        // add(Box.createRigidArea(new Dimension(0, 20)));
-        // add(backButton);
-        // add(Box.createVerticalGlue());
+    public GameView() {
+        backButton = new JButton("back");
+        this.add(backButton);
     }
 
     public JButton getBackButton() {

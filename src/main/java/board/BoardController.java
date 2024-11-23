@@ -1,12 +1,15 @@
 package board;
 
 import javax.swing.*;
+
+import game.GameController;
+
 import java.awt.*;
 import java.awt.event.*;
 import piece.Piece;
-import piece.PieceView;
 
 public class BoardController {
+    private GameController gameController;
     private Board board;
     private BoardView boardView;
     private Piece selectedPiece;
@@ -15,7 +18,8 @@ public class BoardController {
     int targetRow;
     int targetCol;
 
-    public BoardController() {
+    public BoardController(GameController gameController) {
+        this.gameController = gameController;
         board = new Board();
         boardView = new BoardView(board);
         setUpListeners();
@@ -51,8 +55,7 @@ public class BoardController {
 
         selectedPiece = board.getPiece(selectedRow, selectedCol);
         if (selectedPiece != null) {
-            highlightTiles(Color.RED); // Highlight all tiles in red
-            System.out.println("Piece selected: " + selectedPiece + " at: " + selectedRow + "," + selectedCol);
+            highlightTiles(Color.RED);
         } else {
             System.out.println("No piece at selected position: " + selectedRow + "," + selectedCol);
         }
@@ -60,28 +63,21 @@ public class BoardController {
 
     private void handleMouseReleased(MouseEvent e) {
         Component releasedComponent = boardView.findComponentAt(e.getPoint());
-        System.out.println(releasedComponent);
-        JPanel releasedTile;
 
         if (releasedComponent == null) {
             System.out.println("Released component is neither a tile nor a piece view.");
-            resetTileColors(); // Reset tile colors before exiting
+            resetTileColors();
             return;
         }
         Point point = e.getPoint();
         targetRow = point.y / 100;
         targetCol = point.x / 100;
 
-        if (releasedComponent instanceof PieceView) {
-            releasedTile = (JPanel) releasedComponent.getParent();
-        } else if (releasedComponent instanceof JPanel) {
-            releasedTile = (JPanel) releasedComponent;
-        }
-
         if (true) {
             System.out.println("Moved piece to: " + targetRow + "," + targetCol);
             board.setPiece(targetRow, targetCol, selectedPiece);
             board.setPiece(selectedRow, selectedCol, null);
+            gameController.addMove(selectedCol, selectedRow, targetCol, targetRow);
             boardView.updateBoard();
         } else {
             System.out.println("Move failed.");
