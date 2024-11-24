@@ -37,6 +37,10 @@ public class Pawn implements Piece {
   public void setRow(int row) {
     this.row = row;
   }
+  @Override
+  public void setCol(int col) {
+    this.col = col;
+  }
 
   @Override
   public boolean isValidMove(int fromCol, int fromRow, int toCol, int toRow, Board board) {
