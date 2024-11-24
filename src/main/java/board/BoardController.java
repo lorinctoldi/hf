@@ -99,23 +99,51 @@ public class BoardController {
             return false;
         if (board.getTurn() != piece.getColor())
             return false;
+
         if (!piece.isValidMove(originCol, originRow, targetCol, targetRow, board))
             return false;
 
         if (board.willKingBeInCheck(originCol, originRow, targetCol, targetRow, board.getTurn()))
             return false;
+
+        // Handle castling
+        if (piece.getType() == Piece.PieceType.KING && Math.abs(targetCol - originCol) == 2) {
+            int rookCol = (targetCol > originCol) ? 7 : 0; // Determine the rook's column
+            if (!board.canCastle(piece.getColor(), rookCol)) {
+                return false;
+            }
+
+            int step = (targetCol > originCol) ? 1 : -1;
+            for (int col = originCol; col != targetCol + step; col += step) {
+                if (board.isSquareUnderAttack(originRow, col, piece.getColor())) {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         return true;
     }
 
     public void performMove(int originCol, int originRow, int targetCol, int targetRow) {
         Piece piece = board.getPiece(originRow, originCol);
 
+        if (piece.getType() == Piece.PieceType.KING && Math.abs(targetCol - originCol) == 2) {
+            int rookCol = (targetCol > originCol) ? 7 : 0; // Determine which rook is involved
+            int rookTargetCol = (targetCol > originCol) ? targetCol - 1 : targetCol + 1;
+
+            // Move the rook
+            Piece rook = board.getPiece(originRow, rookCol);
+            board.setPiece(originRow, rookTargetCol, rook);
+            board.setPiece(originRow, rookCol, null);
+        }
+
         board.setPiece(targetRow, targetCol, piece);
         board.setPiece(originRow, originCol, null);
-        
+
         if (piece.getType() == Piece.PieceType.PAWN) {
             if ((piece.getColor() == Piece.Color.WHITE && targetRow == 0) ||
-            (piece.getColor() == Piece.Color.BLACK && targetRow == 7)) {
+                    (piece.getColor() == Piece.Color.BLACK && targetRow == 7)) {
                 promotePawn(targetRow, targetCol, piece.getColor());
             }
         }

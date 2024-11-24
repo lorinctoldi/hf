@@ -6,6 +6,10 @@ import java.util.ArrayList;
 
 public class Board {
   private ArrayList<ArrayList<Piece>> pieces;
+  private boolean whiteKingMoved;
+  private boolean blackKingMoved;
+  private boolean whiteRookMoved[] = new boolean[2];
+  private boolean blackRookMoved[] = new boolean[2];
 
   private Piece.Color turn;
 
@@ -38,6 +42,14 @@ public class Board {
 
   public void initializeBoard() {
     this.turn = Piece.Color.WHITE;
+
+    whiteKingMoved = false;
+    blackKingMoved = false;
+
+    for(int i = 0; i < 2; i++) {
+      whiteRookMoved[i] = false; // Left rook
+      blackRookMoved[i] = false;
+    }
 
     pieces = new ArrayList<>(8);
     for (int row = 0; row < 8; row++) {
@@ -85,6 +97,28 @@ public class Board {
 
   public void setPiece(int row, int col, Piece piece) {
     if (row >= 0 && row < 8 && col >= 0 && col < 8) {
+      if (piece != null) {
+        if (piece.getType() == Piece.PieceType.KING) {
+          if (piece.getColor() == Piece.Color.WHITE) {
+            whiteKingMoved = true;
+          } else {
+            blackKingMoved = true;
+          }
+        } else if (piece.getType() == Piece.PieceType.ROOK) {
+          if (piece.getColor() == Piece.Color.WHITE) {
+            if (row == 7 && col == 0)
+              whiteRookMoved[0] = true; // Left rook
+            if (row == 7 && col == 7)
+              whiteRookMoved[1] = true; // Right rook
+          } else {
+            if (row == 0 && col == 0)
+              blackRookMoved[0] = true; // Left rook
+            if (row == 0 && col == 7)
+              blackRookMoved[1] = true; // Right rook
+          }
+        }
+      }
+
       pieces.get(row).set(col, piece);
     }
   }
@@ -134,92 +168,99 @@ public class Board {
     int kingRow = -1;
     int kingCol = -1;
     for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
-            Piece piece = getPiece(r, c);
-            if (piece != null && piece.getColor() == color && piece.getType() == Piece.PieceType.KING) {
-                kingRow = r;
-                kingCol = c;
-                break;
-            }
+      for (int c = 0; c < 8; c++) {
+        Piece piece = getPiece(r, c);
+        if (piece != null && piece.getColor() == color && piece.getType() == Piece.PieceType.KING) {
+          kingRow = r;
+          kingCol = c;
+          break;
         }
-        if (kingRow != -1) break;
+      }
+      if (kingRow != -1)
+        break;
     }
 
     // Check if the king is currently in check
     if (kingRow != -1 && isSquareUnderAttack(kingRow, kingCol, color)) {
-        // If the king is in check, we need to check if there are any valid moves left
-        for (int r = 0; r < 8; r++) {
-            for (int c = 0; c < 8; c++) {
-                Piece piece = getPiece(r, c);
-                if (piece == null || piece.getColor() != color) continue;
+      // If the king is in check, we need to check if there are any valid moves left
+      for (int r = 0; r < 8; r++) {
+        for (int c = 0; c < 8; c++) {
+          Piece piece = getPiece(r, c);
+          if (piece == null || piece.getColor() != color)
+            continue;
 
-                for (int r2 = 0; r2 < 8; r2++) {
-                    for (int c2 = 0; c2 < 8; c2++) {
-                        if (r == r2 && c == c2 || !piece.isValidMove(c, r, c2, r2, this)) continue;
-                        // Simulate the move and check if it results in the king being in check
-                        if (!willKingBeInCheck(c, r, c2, r2, color)) {
-                            return false; // Found a valid move that doesn't put the king in check
-                        }
-                    }
-                }
+          for (int r2 = 0; r2 < 8; r2++) {
+            for (int c2 = 0; c2 < 8; c2++) {
+              if (r == r2 && c == c2 || !piece.isValidMove(c, r, c2, r2, this))
+                continue;
+              // Simulate the move and check if it results in the king being in check
+              if (!willKingBeInCheck(c, r, c2, r2, color)) {
+                return false; // Found a valid move that doesn't put the king in check
+              }
             }
+          }
         }
-        return true; // No valid moves, it's checkmate
+      }
+      return true; // No valid moves, it's checkmate
     }
 
     return false; // The king is not in check, it's not checkmate
-}
+  }
 
-public boolean isDraw(Piece.Color color) {
+  public boolean isDraw(Piece.Color color) {
     // Check for stalemate and insufficient material
     if (isStalemate(color) || isInsufficientMaterial(color)) {
-        return true;
+      return true;
     }
 
     return false; // No draw
-}
+  }
 
-public boolean isStalemate(Piece.Color color) {
+  public boolean isStalemate(Piece.Color color) {
     // Loop through the board to check if the king is in check
     int kingRow = -1;
     int kingCol = -1;
     for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
-            Piece piece = getPiece(r, c);
-            if (piece != null && piece.getColor() == color && piece.getType() == Piece.PieceType.KING) {
-                kingRow = r;
-                kingCol = c;
-                break;
-            }
+      for (int c = 0; c < 8; c++) {
+        Piece piece = getPiece(r, c);
+        if (piece != null && piece.getColor() == color && piece.getType() == Piece.PieceType.KING) {
+          kingRow = r;
+          kingCol = c;
+          break;
         }
-        if (kingRow != -1) break;
+      }
+      if (kingRow != -1)
+        break;
     }
 
     // If the king is in check, it's not stalemate
     if (kingRow != -1 && isSquareUnderAttack(kingRow, kingCol, color)) {
-        return false;
+      return false;
     }
 
-    // Loop through all pieces of the current color to see if they have any valid moves
+    // Loop through all pieces of the current color to see if they have any valid
+    // moves
     for (int r = 0; r < 8; r++) {
-        for (int c = 0; c < 8; c++) {
-            Piece piece = getPiece(r, c);
-            if (piece == null || piece.getColor() != color) continue;
+      for (int c = 0; c < 8; c++) {
+        Piece piece = getPiece(r, c);
+        if (piece == null || piece.getColor() != color)
+          continue;
 
-            for (int r2 = 0; r2 < 8; r2++) {
-                for (int c2 = 0; c2 < 8; c2++) {
-                    if (r == r2 && c == c2 || !piece.isValidMove(c, r, c2, r2, this)) continue;
-                    // Try the move and check if it results in the king being in check
-                    if (!willKingBeInCheck(c, r, c2, r2, color)) {
-                        return false; // Found a valid move, it's not stalemate
-                    }
-                }
+        for (int r2 = 0; r2 < 8; r2++) {
+          for (int c2 = 0; c2 < 8; c2++) {
+            if (r == r2 && c == c2 || !piece.isValidMove(c, r, c2, r2, this))
+              continue;
+            // Try the move and check if it results in the king being in check
+            if (!willKingBeInCheck(c, r, c2, r2, color)) {
+              return false; // Found a valid move, it's not stalemate
             }
+          }
         }
+      }
     }
 
     return true; // No valid moves, it's stalemate
-}
+  }
 
   public boolean isInsufficientMaterial(Piece.Color color) {
     int whiteMaterial = 0;
@@ -250,5 +291,25 @@ public boolean isStalemate(Piece.Color color) {
 
   public void changeTurn() {
     this.turn = (this.turn == Piece.Color.WHITE ? Piece.Color.BLACK : Piece.Color.WHITE);
+  }
+
+  public boolean hasKingMoved(Piece.Color color) {
+    return color == Piece.Color.WHITE ? whiteKingMoved : blackKingMoved;
+  }
+
+  public boolean hasRookMoved(Piece.Color color, boolean rightRook) {
+    if (color == Piece.Color.WHITE) {
+      return whiteRookMoved[rightRook ? 1 : 0];
+    } else {
+      return blackRookMoved[rightRook ? 1 : 0];
+    }
+  }
+
+  public boolean canCastle(Piece.Color color, int rookCol) {
+    if (color == Piece.Color.WHITE) {
+      return !whiteKingMoved && !whiteRookMoved[rookCol == 7 ? 1 : 0];
+    } else {
+      return !blackKingMoved && !blackRookMoved[rookCol == 7 ? 1 : 0];
+    }
   }
 }
