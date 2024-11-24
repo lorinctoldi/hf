@@ -79,7 +79,7 @@ public class BoardController {
         targetCol = point.x / 100;
 
         if (isValidMove(selectedCol, selectedRow, targetCol, targetRow)) {
-            performMove(selectedCol, selectedRow, targetCol, targetRow);
+            performMove(selectedCol, selectedRow, targetCol, targetRow, false);
         } else {
             System.out.println("Move failed.");
         }
@@ -92,11 +92,13 @@ public class BoardController {
     private boolean isValidMove(int originCol, int originRow, int targetCol, int targetRow) {
         if(board.getTurn() != selectedPiece.getColor()) return false;
         if(!selectedPiece.isValidMove(originCol, originRow, targetCol, targetRow, board)) return false;
+        
+        if(board.wouldKingBeInCheck(originCol, originRow, targetRow, targetCol, board.getTurn())) return false;
         return true;
     }
 
-    public void performMove(int originCol, int originRow, int targetCol, int targetRow) {
-        gameController.addMove(originCol, originRow, targetCol, targetRow);
+    public void performMove(int originCol, int originRow, int targetCol, int targetRow, boolean replay) {
+        if(!replay) gameController.addMove(originCol, originRow, targetCol, targetRow);
         selectedPiece = board.getPiece(originRow, originCol);
 
         board.setPiece(targetRow, targetCol, selectedPiece);

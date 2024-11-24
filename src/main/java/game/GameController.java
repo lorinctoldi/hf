@@ -100,9 +100,9 @@ public class GameController {
   public void replayMoves(int upToIndex) {
     boardController.resetBoard();
 
-    for (int i = 0; i <= upToIndex; i++) {
+    for (int i = 0; i < upToIndex; i++) {
       Move move = moveController.getMoves().get(i);
-      boardController.performMove(move.getOriginCol(), move.getOriginRow(), move.getTargetCol(), move.getTargetRow());
+      boardController.performMove(move.getOriginCol(), move.getOriginRow(), move.getTargetCol(), move.getTargetRow(), true);
     }
 
     moveController.deleteMovesAfter(upToIndex);

@@ -52,16 +52,19 @@ public class Knight implements Piece {
       boolean isLShapeMove = (rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2);
 
       Piece targetPiece = board.getPiece(toRow, toCol);
-      if (targetPiece != null && targetPiece.getType() == Piece.PieceType.KING) {
-        return false; 
-      }
 
       return isLShapeMove && (targetPiece == null || targetPiece.getColor() != this.color);
   }
 
 
   @Override
+  public Piece copy() {
+    return new Knight(this.color, this.row, this.col);
+  }
+
+
+  @Override
   public String toString() {
-    return color + " Pawn";
+    return color + " Knight";
   }
 }

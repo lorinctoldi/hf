@@ -50,9 +50,6 @@ public class Rook implements Piece {
     Piece targetPiece = board.getPiece(toRow, toCol);
     if (targetPiece != null && targetPiece.getColor() == this.color)
       return false;
-    if (targetPiece != null && targetPiece.getType() == Piece.PieceType.KING) {
-      return false;
-    }
     if (fromRow == toRow || fromCol == toCol) {
       return isPathClear(fromCol, fromRow, toCol, toRow, board);
     }
@@ -74,8 +71,14 @@ public class Rook implements Piece {
     return true;
   }
 
+
+  @Override
+  public Piece copy() {
+    return new Rook(this.color, this.row, this.col);
+  }
+
   @Override
   public String toString() {
-    return color + " Pawn";
+    return color + " Rook";
   }
 }

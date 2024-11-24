@@ -70,8 +70,14 @@ public class Bishop implements Piece {
     return false;
   }
 
+
+  @Override
+  public Piece copy() {
+    return new Bishop(this.color, this.row, this.col);
+  }
+
   @Override
   public String toString() {
-    return color + " Pawn";
+    return color + " Bishop";
   }
 }

@@ -6,11 +6,34 @@ import java.util.ArrayList;
 
 public class Board {
   private ArrayList<ArrayList<Piece>> pieces;
-  
+
   private Piece.Color turn;
 
   public Board() {
     initializeBoard();
+  }
+
+  public Board(Board other) {
+    // Copy the current turn
+    this.turn = other.turn;
+
+    // Initialize the pieces ArrayList
+    this.pieces = new ArrayList<>(8);
+
+    // Deep copy the pieces from the other board
+    for (int row = 0; row < 8; row++) {
+      ArrayList<Piece> rowPieces = new ArrayList<>(8);
+      for (int col = 0; col < 8; col++) {
+        Piece piece = other.getPiece(row, col);
+        // Copy the piece if it exists, otherwise add null
+        if (piece != null) {
+          rowPieces.add(piece.copy());
+        } else {
+          rowPieces.add(null);
+        }
+      }
+      this.pieces.add(rowPieces);
+    }
   }
 
   public void initializeBoard() {
@@ -30,7 +53,7 @@ public class Board {
       }
       pieces.add(rowPieces);
     }
-    
+
     setupInitialPieces();
     System.out.println("Board is setup");
   }
@@ -69,6 +92,42 @@ public class Board {
 
   public Piece.Color getTurn() {
     return this.turn;
+  }
+
+  public boolean isSquareUnderAttack(int row, int col, Piece.Color color) {
+    for (int r = 0; r < 8; r++) {
+      for (int c = 0; c < 8; c++) {
+        Piece piece = getPiece(r, c);
+        if (piece == null)
+          continue;
+        if (piece != null && piece.getColor() != color) {
+          if (piece.isValidMove(c, r, col, row, this)) {
+            return true;
+          }
+        }
+      }
+    }
+
+    return false;
+  }
+
+  public boolean wouldKingBeInCheck(int originCol, int originRow, int targetRow, int targetCol, Piece.Color color) {
+    Board copy = new Board(this);
+    copy.setPiece(targetRow, targetCol, copy.getPiece(originRow, originCol));
+    copy.setPiece(originRow, originCol, null);
+
+    for (int r = 0; r < 8; r++) {
+      for (int c = 0; c < 8; c++) {
+        Piece piece = copy.getPiece(r, c);
+        if (piece == null)
+          continue;
+        if (piece.getType() == Piece.PieceType.KING && piece.getColor() == color) {
+          return copy.isSquareUnderAttack(r, c, color);
+        }
+      }
+    }
+
+    return false;
   }
 
   public void changeTurn() {

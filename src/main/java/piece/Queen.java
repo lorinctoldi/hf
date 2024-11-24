@@ -53,7 +53,7 @@ public class Queen implements Piece {
     int colDiff = Math.abs(toCol - fromCol);
 
     Piece targetPiece = board.getPiece(toRow, toCol);
-    if (targetPiece != null && (targetPiece.getType() == Piece.PieceType.KING || targetPiece.getColor() == this.color)) {
+    if (targetPiece != null && (targetPiece.getColor() == this.color)) {
       return false;
     }
 
@@ -79,8 +79,14 @@ public class Queen implements Piece {
     return true;
   }
 
+
+  @Override
+  public Piece copy() {
+    return new Queen(this.color, this.row, this.col);
+  }
+
   @Override
   public String toString() {
-    return color + " Pawn";
+    return color + " Queen";
   }
 }

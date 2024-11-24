@@ -17,6 +17,8 @@ public interface Piece {
 
   PieceType getType();
 
+  public Piece copy();
+
   enum PieceType {
     PAWN, ROOK, KNIGHT, BISHOP, QUEEN, KING
   }

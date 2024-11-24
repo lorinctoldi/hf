@@ -70,7 +70,12 @@ public class King implements Piece {
 
 
   @Override
+  public Piece copy() {
+    return new King(this.color, this.row, this.col);
+  }
+
+  @Override
   public String toString() {
-    return color + " Pawn";
+    return color + " King";
   }
 }

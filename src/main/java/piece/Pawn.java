@@ -40,18 +40,15 @@ public class Pawn implements Piece {
 
   @Override
   public boolean isValidMove(int fromCol, int fromRow, int toCol, int toRow, Board board) {
-    System.out.println("1 jo");
     if (fromRow == toRow && fromCol == toCol) {
       return false;
     }
-    System.out.println("2 jo");
     int direction = (this.color == Piece.Color.WHITE) ? -1 : 1;
     if (toRow == fromRow + direction && toCol == fromCol) {
       if (board.getPiece(toRow, toCol) == null) {
         return true;
       }
     }
-    System.out.println("3 jo");
     if (((this.color == Piece.Color.WHITE) && fromRow == 6) || ((this.color == Piece.Color.BLACK) && fromRow == 1)) {
       if (toRow == fromRow + 2 * direction && toCol == fromCol) {
         if (board.getPiece(toRow, toCol) == null && board.getPiece(fromRow + direction, fromCol) == null) {
@@ -59,20 +56,19 @@ public class Pawn implements Piece {
         }
       }
     }
-    System.out.println("4 jo");
     if (toRow == fromRow + direction && Math.abs(toCol - fromCol) == 1) {
-      System.out.println("5 jo");
       Piece targetPiece = board.getPiece(toRow, toCol);
       if (targetPiece != null) {
-        System.out.println("6 jo");
-        if (targetPiece.getType() == Piece.PieceType.KING) {
-          System.out.println("7 jo");
-          return false;
-        }
         return targetPiece.getColor() != this.color;
       }
     }
     return false;
+  }
+
+
+  @Override
+  public Piece copy() {
+    return new Pawn(this.color, this.row, this.col);
   }
 
   @Override
