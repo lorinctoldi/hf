@@ -74,11 +74,6 @@ public class BoardView extends JPanel {
         tile.setBackground(isLightSquare ? lightColor : darkColor);
     }
 
-    public void highlightTiles(Color color) {
-        for (Component comp : this.getComponents()) {
-            comp.setBackground(color);
-        }
-    }
 
     public void resetTileColors() {
         for (int row = 0; row < 8; row++) {

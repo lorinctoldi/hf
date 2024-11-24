@@ -16,9 +16,7 @@ public class MoveController {
   public MoveController(ArrayList<Move> moves) {
     if(moves != null && moves.size() != 0) {
       this.moves = moves;
-      System.out.println("vannak moveok");
     } else {
-      System.out.println("nincsenek moveok");
       this.moves = new ArrayList<>();
     }
     movePanel = new JPanel();

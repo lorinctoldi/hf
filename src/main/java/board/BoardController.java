@@ -59,8 +59,8 @@ public class BoardController {
         selectedCol = point.x / 100;
 
         selectedPiece = board.getPiece(selectedRow, selectedCol);
-        if (selectedPiece != null) {
-            highlightTiles(Color.RED);
+        if (selectedPiece != null && selectedPiece.getColor() == board.getTurn()) {
+            highlightValidMoves(selectedRow, selectedCol);
         } else {
             System.out.println("No piece at selected position: " + selectedRow + "," + selectedCol);
         }
@@ -70,7 +70,6 @@ public class BoardController {
         Component releasedComponent = boardView.findComponentAt(e.getPoint());
 
         if (releasedComponent == null) {
-            System.out.println("Released component is neither a tile nor a piece view.");
             resetTileColors();
             return;
         }
@@ -78,10 +77,10 @@ public class BoardController {
         targetRow = point.y / 100;
         targetCol = point.x / 100;
 
-        if (isValidMove(selectedCol, selectedRow, targetCol, targetRow)) {
-            performMove(selectedCol, selectedRow, targetCol, targetRow, false);
-        } else {
-            System.out.println("Move failed.");
+        if(!(selectedCol == targetCol && selectedRow == targetRow)) {
+            if (isValidMove(selectedCol, selectedRow, targetCol, targetRow)) {
+                performMove(selectedCol, selectedRow, targetCol, targetRow, false);
+            }
         }
 
         selectedPiece = null;
@@ -93,7 +92,7 @@ public class BoardController {
         if(board.getTurn() != selectedPiece.getColor()) return false;
         if(!selectedPiece.isValidMove(originCol, originRow, targetCol, targetRow, board)) return false;
         
-        if(board.wouldKingBeInCheck(originCol, originRow, targetRow, targetCol, board.getTurn())) return false;
+        if(board.willKingBeInCheck(originCol, originRow, targetCol, targetRow, board.getTurn())) return false;
         return true;
     }
 
@@ -103,17 +102,53 @@ public class BoardController {
 
         board.setPiece(targetRow, targetCol, selectedPiece);
         board.setPiece(originRow, originCol, null);
-        System.out.println(board.getTurn());
-        System.out.println("Changed current turn");
         board.changeTurn();
 
         boardView.updateBoard();
         boardView.repaint();
         boardView.revalidate();
+
+                // Check for draw conditions (e.g., stalemate)
+                if (board.isDraw(board.getTurn())) {
+                    String drawMessage = "The game is a draw!";
+                    JOptionPane.showMessageDialog(null, drawMessage);
+                    return;
+                }
+
+        if (board.isMate(board.getTurn())) {
+            String winner = (board.getTurn() == Piece.Color.WHITE) ? "Black" : "White";
+            JOptionPane.showMessageDialog(null, winner + " wins! Checkmate!");
+            return;
+        }
+        
+        boardView.updateBoard();
+        boardView.repaint();
+        boardView.revalidate();
     }
 
-    private void highlightTiles(Color color) {
-        boardView.highlightTiles(color);
+    private void highlightValidMoves(int originRow, int originCol) {
+        // Clear previous highlights
+        resetTileColors();
+
+    // Get the piece at the selected position
+    Piece piece = board.getPiece(originRow, originCol);
+
+    if (piece != null) {
+        // Highlight the tile where the piece currently stands
+        JPanel currentTile = (JPanel) boardView.getComponent(originRow * 8 + originCol);
+        currentTile.setBackground(new Color(147, 177, 120)); // Highlight color for the current piece position
+
+        // Loop through all possible board positions to highlight valid moves
+        for (int row = 0; row < 8; row++) {
+            for (int col = 0; col < 8; col++) {
+                // If this is a valid move for the selected piece, highlight the tile
+                if (piece.isValidMove(originCol, originRow, col, row, board)) {
+                    JPanel tile = (JPanel) boardView.getComponent(row * 8 + col);
+                    tile.setBackground(new Color(147, 177, 120)); // Change the highlight color
+                }
+            }
+        }
+    }
     }
 
     private void resetTileColors() {

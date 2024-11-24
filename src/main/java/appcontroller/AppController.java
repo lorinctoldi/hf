@@ -99,13 +99,6 @@ public class AppController {
                     moves.add(new Move(originCol, originRow, targetCol, targetRow));
                 }
 
-                System.out.println("maki moves");
-                for(Move move : moves) {
-                    System.out.println(move);
-                }
-
-                
-
                 gameController = new GameController(this, name, elo, moves);
                 switchToView(gameController.getView());
                 gameController.replayMoves(moves.size()); 
