@@ -22,11 +22,11 @@ public class GameController {
   private MoveController moveController;
   private GameView gameView;
 
-  public GameController(AppController appController, String name, int elo, ArrayList<Move> moves) {
+  public GameController(AppController appController, String name, int elo) {
     this.appController = appController;
     boardController = new BoardController(this);
     playerController = new PlayerController(name, elo);
-    moveController = new MoveController(moves);
+    moveController = new MoveController();
     gameView = new GameView(boardController.getView(), playerController.getView(), moveController.getView());
 
     moveController.setMoveClickListener(moveIndex -> {
@@ -99,12 +99,20 @@ public class GameController {
 
   public void replayMoves(int upToIndex) {
     boardController.resetBoard();
-
-    for (int i = 0; i < upToIndex; i++) {
+    
+    for (int i = 0; i <= upToIndex; i++) {
       Move move = moveController.getMoves().get(i);
-      boardController.performMove(move.getOriginCol(), move.getOriginRow(), move.getTargetCol(), move.getTargetRow(), true);
+      boardController.performMove(move.getOriginCol(), move.getOriginRow(), move.getTargetCol(), move.getTargetRow());
+      System.out.println("performed move " + i);
     }
 
+    boardController.getView().repaint();
+    boardController.getView().revalidate();
     moveController.deleteMovesAfter(upToIndex);
+  }
+
+  public void setMoves(ArrayList<Move> moves) {
+    moveController.setMoves(moves);
+    replayMoves(moves.size() - 1);
   }
 }

@@ -13,12 +13,8 @@ public class MoveController {
   private JPanel movePanel;
   private MoveClickListener listener;
 
-  public MoveController(ArrayList<Move> moves) {
-    if(moves != null && moves.size() != 0) {
-      this.moves = moves;
-    } else {
-      this.moves = new ArrayList<>();
-    }
+  public MoveController() {
+    this.moves = new ArrayList<>();
     movePanel = new JPanel();
     movePanel.setLayout(new BoxLayout(movePanel, BoxLayout.Y_AXIS));
   }
@@ -27,14 +23,25 @@ public class MoveController {
     Move move = new Move(originCol, originRow, targetCol, targetRow);
     moves.add(move);
 
-    MoveView moveView = new MoveView(move.toString());
-    moveView.addMoveClickListener(e -> {
-      if (listener != null) {
-        listener.onMoveClicked(moves.indexOf(move));
-      }
-    });
+    System.out.println("Current moves");
+    for(Move m : moves) {
+      System.out.println(m);
+    }
+    repaint();
+  }
 
-    movePanel.add(moveView);
+  private void repaint() {
+    movePanel.removeAll();
+    for (Move move : moves) {
+      MoveView moveView = new MoveView(move.toString());
+      moveView.addMoveClickListener(e -> {
+        if (listener != null) {
+          listener.onMoveClicked(moves.indexOf(move));
+        }
+      });
+
+      movePanel.add(moveView);
+    }
     movePanel.revalidate();
     movePanel.repaint();
 
@@ -66,19 +73,12 @@ public class MoveController {
     if (index < moves.size() - 1) {
       for (int i = moves.size() - 1; i > index; i--) {
         moves.remove(i);
-        movePanel.remove(i);
       }
-  
-      movePanel.revalidate();
-      movePanel.repaint();
     }
+
+    repaint();
   }
 
-    /**
-   * Saves the moves to a file in a simple text format.
-   * @param file The file to save the moves to.
-   * @throws IOException If an error occurs while writing to the file.
-   */
   public void saveMovesToFile(File file) throws IOException {
     try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
       for (Move move : moves) {
@@ -86,5 +86,9 @@ public class MoveController {
         writer.newLine();
       }
     }
+  }
+
+  public void setMoves(ArrayList<Move> moves) {
+    this.moves = moves;
   }
 }

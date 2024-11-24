@@ -13,7 +13,7 @@ public class BoardController {
     private Board board;
     private BoardView boardView;
     private Piece selectedPiece;
-    
+
     int selectedRow;
     int selectedCol;
     int targetRow;
@@ -77,9 +77,10 @@ public class BoardController {
         targetRow = point.y / 100;
         targetCol = point.x / 100;
 
-        if(!(selectedCol == targetCol && selectedRow == targetRow)) {
+        if (!(selectedCol == targetCol && selectedRow == targetRow)) {
             if (isValidMove(selectedCol, selectedRow, targetCol, targetRow)) {
-                performMove(selectedCol, selectedRow, targetCol, targetRow, false);
+                gameController.addMove(selectedCol, selectedRow, targetCol, targetRow);
+                performMove(selectedCol, selectedRow, targetCol, targetRow);
             }
         }
 
@@ -89,15 +90,19 @@ public class BoardController {
     }
 
     private boolean isValidMove(int originCol, int originRow, int targetCol, int targetRow) {
-        if(board.getTurn() != selectedPiece.getColor()) return false;
-        if(!selectedPiece.isValidMove(originCol, originRow, targetCol, targetRow, board)) return false;
-        
-        if(board.willKingBeInCheck(originCol, originRow, targetCol, targetRow, board.getTurn())) return false;
+        if (selectedPiece == null)
+            return false;
+        if (board.getTurn() != selectedPiece.getColor())
+            return false;
+        if (!selectedPiece.isValidMove(originCol, originRow, targetCol, targetRow, board))
+            return false;
+
+        if (board.willKingBeInCheck(originCol, originRow, targetCol, targetRow, board.getTurn()))
+            return false;
         return true;
     }
 
-    public void performMove(int originCol, int originRow, int targetCol, int targetRow, boolean replay) {
-        if(!replay) gameController.addMove(originCol, originRow, targetCol, targetRow);
+    public void performMove(int originCol, int originRow, int targetCol, int targetRow) {
         selectedPiece = board.getPiece(originRow, originCol);
 
         board.setPiece(targetRow, targetCol, selectedPiece);
@@ -108,47 +113,42 @@ public class BoardController {
         boardView.repaint();
         boardView.revalidate();
 
-                // Check for draw conditions (e.g., stalemate)
-                if (board.isDraw(board.getTurn())) {
-                    String drawMessage = "The game is a draw!";
-                    JOptionPane.showMessageDialog(null, drawMessage);
-                    return;
-                }
+        if (board.isDraw(board.getTurn())) {
+            String drawMessage = "The game is a draw!";
+            JOptionPane.showMessageDialog(null, drawMessage);
+            return;
+        }
 
         if (board.isMate(board.getTurn())) {
             String winner = (board.getTurn() == Piece.Color.WHITE) ? "Black" : "White";
             JOptionPane.showMessageDialog(null, winner + " wins! Checkmate!");
             return;
         }
-        
-        boardView.updateBoard();
-        boardView.repaint();
-        boardView.revalidate();
     }
 
     private void highlightValidMoves(int originRow, int originCol) {
         // Clear previous highlights
         resetTileColors();
 
-    // Get the piece at the selected position
-    Piece piece = board.getPiece(originRow, originCol);
+        // Get the piece at the selected position
+        Piece piece = board.getPiece(originRow, originCol);
 
-    if (piece != null) {
-        // Highlight the tile where the piece currently stands
-        JPanel currentTile = (JPanel) boardView.getComponent(originRow * 8 + originCol);
-        currentTile.setBackground(new Color(147, 177, 120)); // Highlight color for the current piece position
+        if (piece != null) {
+            // Highlight the tile where the piece currently stands
+            JPanel currentTile = (JPanel) boardView.getComponent(originRow * 8 + originCol);
+            currentTile.setBackground(new Color(147, 177, 120)); // Highlight color for the current piece position
 
-        // Loop through all possible board positions to highlight valid moves
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
-                // If this is a valid move for the selected piece, highlight the tile
-                if (piece.isValidMove(originCol, originRow, col, row, board)) {
-                    JPanel tile = (JPanel) boardView.getComponent(row * 8 + col);
-                    tile.setBackground(new Color(147, 177, 120)); // Change the highlight color
+            // Loop through all possible board positions to highlight valid moves
+            for (int row = 0; row < 8; row++) {
+                for (int col = 0; col < 8; col++) {
+                    // If this is a valid move for the selected piece, highlight the tile
+                    if (piece.isValidMove(originCol, originRow, col, row, board)) {
+                        JPanel tile = (JPanel) boardView.getComponent(row * 8 + col);
+                        tile.setBackground(new Color(147, 177, 120));
+                    }
                 }
             }
         }
-    }
     }
 
     private void resetTileColors() {

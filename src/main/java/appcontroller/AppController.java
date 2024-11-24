@@ -64,7 +64,7 @@ public class AppController {
     }
 
     public void newGame(String name, int elo) {
-        gameController = new GameController(this, name, elo, null);
+        gameController = new GameController(this, name, elo);
         switchToView(gameController.getView());
     }
 
@@ -79,9 +79,7 @@ public class AppController {
                 String name = reader.readLine().split(":")[1].trim();
                 int elo = Integer.parseInt(reader.readLine().split(":")[1].trim());
 
-                
                 reader.readLine();
-
                 
                 ArrayList<Move> moves = new ArrayList<>();
                 String line;
@@ -94,20 +92,19 @@ public class AppController {
                     int originRow = Integer.parseInt(origin[1]);
                     int targetCol = Integer.parseInt(target[0]);
                     int targetRow = Integer.parseInt(target[1]);
-
                     
                     moves.add(new Move(originCol, originRow, targetCol, targetRow));
                 }
 
-                gameController = new GameController(this, name, elo, moves);
-                switchToView(gameController.getView());
-                gameController.replayMoves(moves.size()); 
+                System.out.println("moves size " + moves.size());
+
+                gameController = new GameController(this, name, elo);
+                gameController.setMoves(moves);
 
                 switchToView(gameController.getView());
-
             } catch (IOException | NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Hiba történt a játék betöltésekor: " + ex.getMessage(), "Hiba",
-                        JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.ERROR_MESSAGE);
             }
         }
     }
