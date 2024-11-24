@@ -23,10 +23,6 @@ public class MoveController {
     Move move = new Move(originCol, originRow, targetCol, targetRow);
     moves.add(move);
 
-    System.out.println("Current moves");
-    for(Move m : moves) {
-      System.out.println(m);
-    }
     repaint();
   }
 

@@ -103,12 +103,13 @@ public class GameController {
     for (int i = 0; i <= upToIndex; i++) {
       Move move = moveController.getMoves().get(i);
       boardController.performMove(move.getOriginCol(), move.getOriginRow(), move.getTargetCol(), move.getTargetRow());
-      System.out.println("performed move " + i);
     }
 
     boardController.getView().repaint();
     boardController.getView().revalidate();
     moveController.deleteMovesAfter(upToIndex);
+
+    if(upToIndex % 2 == 0) boardController.robotMove();
   }
 
   public void setMoves(ArrayList<Move> moves) {

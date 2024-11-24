@@ -96,8 +96,6 @@ public class AppController {
                     moves.add(new Move(originCol, originRow, targetCol, targetRow));
                 }
 
-                System.out.println("moves size " + moves.size());
-
                 gameController = new GameController(this, name, elo);
                 gameController.setMoves(moves);
 

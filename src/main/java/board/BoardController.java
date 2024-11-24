@@ -9,7 +9,9 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+import piece.Pawn;
 import piece.Piece;
+import piece.Queen;
 
 public class BoardController {
     private GameController gameController;
@@ -84,6 +86,7 @@ public class BoardController {
             if (isValidMove(selectedCol, selectedRow, targetCol, targetRow, piece)) {
                 gameController.addMove(selectedCol, selectedRow, targetCol, targetRow);
                 performMove(selectedCol, selectedRow, targetCol, targetRow);
+
                 robotMove();
             }
         }
@@ -109,6 +112,14 @@ public class BoardController {
 
         board.setPiece(targetRow, targetCol, piece);
         board.setPiece(originRow, originCol, null);
+        
+        if (piece.getType() == Piece.PieceType.PAWN) {
+            if ((piece.getColor() == Piece.Color.WHITE && targetRow == 0) ||
+            (piece.getColor() == Piece.Color.BLACK && targetRow == 7)) {
+                promotePawn(targetRow, targetCol, piece.getColor());
+            }
+        }
+
         board.changeTurn();
 
         boardView.updateBoard();
@@ -116,16 +127,17 @@ public class BoardController {
         boardView.revalidate();
 
         if (board.isDraw(board.getTurn())) {
-            String drawMessage = "The game is a draw!";
-            JOptionPane.showMessageDialog(null, drawMessage);
-            return;
+            JOptionPane.showMessageDialog(null, "The game is a draw!");
         }
-
         if (board.isMate(board.getTurn())) {
             String winner = (board.getTurn() == Piece.Color.WHITE) ? "Black" : "White";
             JOptionPane.showMessageDialog(null, winner + " wins! Checkmate!");
-            return;
         }
+    }
+
+    private void promotePawn(int row, int col, Piece.Color color) {
+        Piece promotedPiece = new Queen(color, row, col);
+        board.setPiece(row, col, promotedPiece);
     }
 
     private void highlightValidMoves(int originRow, int originCol) {
@@ -165,7 +177,6 @@ public class BoardController {
                     for (int targetRow = 0; targetRow < 8; targetRow++) {
                         for (int targetCol = 0; targetCol < 8; targetCol++) {
                             if (isValidMove(col, row, targetCol, targetRow, board.getPiece(row, col))) {
-                                // Store the move in the format {originRow, originCol, targetRow, targetCol}
                                 possibleMoves.add(new int[] { col, row, targetCol, targetRow });
                             }
                         }
@@ -174,19 +185,8 @@ public class BoardController {
             }
         }
 
-        // If there are no valid moves, it's checkmate or stalemate
-        if (possibleMoves.isEmpty()) {
-            if (board.isMate(robotColor)) {
-                String winner = (robotColor == Piece.Color.WHITE) ? "Black" : "White";
-                JOptionPane.showMessageDialog(null, winner + " wins! Checkmate!");
-            } else if (board.isDraw(robotColor)) {
-                JOptionPane.showMessageDialog(null, "The game is a draw!");
-            }
-            return;
-        }
-
         // Select a random move
-        Random random = new Random();
+        Random random = new Random(possibleMoves.size());
         int[] chosenMove = possibleMoves.get(random.nextInt(possibleMoves.size()));
 
         // Perform the move
@@ -195,6 +195,7 @@ public class BoardController {
         int targetCol = chosenMove[2];
         int targetRow = chosenMove[3];
 
+        gameController.addMove(originCol, originRow, targetCol, targetRow);
         performMove(originCol, originRow, targetCol, targetRow);
     }
 
