@@ -10,10 +10,8 @@ public class PlayerView extends JPanel {
     setMinimumSize(new Dimension(300, 20));
     setMaximumSize(new Dimension(Integer.MAX_VALUE, 20)); 
     setBackground(Color.DARK_GRAY); 
-
     
     setLayout(new BorderLayout());
-
     
     JPanel leftPanel = new JPanel();
     leftPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0)); 

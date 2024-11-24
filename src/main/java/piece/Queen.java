@@ -79,7 +79,6 @@ public class Queen implements Piece {
     return true;
   }
 
-
   @Override
   public Piece copy() {
     return new Queen(this.color, this.row, this.col);
