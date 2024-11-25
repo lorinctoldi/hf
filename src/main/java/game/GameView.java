@@ -9,43 +9,55 @@ public class GameView extends JPanel {
     private JButton saveButton;
     private JFileChooser fileChooser;
 
-    public GameView(JPanel boardView, JPanel playerView, JScrollPane moveView) {
+    public GameView(JPanel boardView, JPanel playerView, JPanel robotView, JScrollPane moveView) {
         setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        
+
         add(boardView);
-        
+        add(Box.createRigidArea(new Dimension(20, 0))); // Add 20px horizontal gap between panels
+
         JPanel sidePanel = new JPanel();
-        sidePanel.setMaximumSize(new Dimension(300, 600));
+        sidePanel.setMaximumSize(new Dimension(300, 800));
         sidePanel.setLayout(new BoxLayout(sidePanel, BoxLayout.Y_AXIS));
-
-        sidePanel.add(moveView);
-
-        JComponent bottomPlayerView = playerView; 
-        sidePanel.add(bottomPlayerView);
-        setBackground(new Color(22, 21, 19));
         sidePanel.setBackground(new Color(22, 21, 19));
+
+        sidePanel.add(Box.createVerticalGlue()); // Push components to the center vertically
+
+        
+        // Container for playerView and moveView
+        JPanel playersAndMoveContainer = new JPanel();
+        playersAndMoveContainer.setLayout(new BoxLayout(playersAndMoveContainer, BoxLayout.Y_AXIS));
+        playersAndMoveContainer.setBackground(new Color(22, 21, 19)); // Match the background
+        playersAndMoveContainer.add(robotView);
+        playersAndMoveContainer.add(moveView);
+        playersAndMoveContainer.add(playerView);
+
+        sidePanel.add(playersAndMoveContainer);
+        sidePanel.add(Box.createRigidArea(new Dimension(0, 20))); // Space between other components
 
         fileChooser = new JFileChooser();
         fileChooser.setVisible(false);
         sidePanel.add(fileChooser);
-        sidePanel.add(Box.createRigidArea(new Dimension(0, 10))); // Space between elements
+        sidePanel.add(Box.createRigidArea(new Dimension(0, 20))); // Space between elements
 
         saveButton = createButton("Játék mentése");
         sidePanel.add(saveButton);
-        sidePanel.add(Box.createRigidArea(new Dimension(0, 10))); // Space between elements
+        sidePanel.add(Box.createRigidArea(new Dimension(0, 20))); // Space between elements
 
         resignButton = createButton("Feladás");
         sidePanel.add(resignButton);
-        sidePanel.add(Box.createRigidArea(new Dimension(0, 10))); // Space between elements
+        sidePanel.add(Box.createRigidArea(new Dimension(0, 20))); // Space between elements
 
         exitButton = createButton("Kilépés");
         sidePanel.add(exitButton);
 
+        sidePanel.add(Box.createVerticalGlue()); // Push components to the center vertically
+
         saveButton.setAlignmentX(CENTER_ALIGNMENT);
         resignButton.setAlignmentX(CENTER_ALIGNMENT);
         exitButton.setAlignmentX(CENTER_ALIGNMENT);
-        
+
         add(sidePanel);
+        setBackground(new Color(22, 21, 19));
     }
 
 

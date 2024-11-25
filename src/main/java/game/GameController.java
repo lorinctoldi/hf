@@ -19,6 +19,7 @@ public class GameController {
   private AppController appController;
   private BoardController boardController;
   private PlayerController playerController;
+  private PlayerController robotController;
   private MoveController moveController;
   private GameView gameView;
 
@@ -26,8 +27,9 @@ public class GameController {
     this.appController = appController;
     boardController = new BoardController(this);
     playerController = new PlayerController(name, elo);
+    robotController = new PlayerController("Robot", 200);
     moveController = new MoveController();
-    gameView = new GameView(boardController.getView(), playerController.getView(), moveController.getView());
+    gameView = new GameView(boardController.getView(), playerController.getView(), robotController.getView(), moveController.getView());
 
     moveController.setMoveClickListener(moveIndex -> {
       replayMoves(moveIndex); 
