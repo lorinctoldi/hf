@@ -14,13 +14,35 @@ public class Pawn implements Piece {
   }
 
   @Override
-  public Color getColor() {
-    return color;
+  public boolean isValidMove(int originCol, int originRow, int targetCol, int targetRow, Board board) {
+    if (originRow == targetRow && originCol == targetCol) {
+      return false;
+    }
+    int direction = (this.color == Piece.Color.WHITE) ? -1 : 1;
+    if (targetRow == originRow + direction && targetCol == originCol) {
+      if (board.getPiece(targetRow, targetCol) == null) {
+        return true;
+      }
+    }
+    if (((this.color == Piece.Color.WHITE) && originRow == 6) || ((this.color == Piece.Color.BLACK) && originRow == 1)) {
+      if (targetRow == originRow + 2 * direction && targetCol == originCol) {
+        if (board.getPiece(targetRow, targetCol) == null && board.getPiece(originRow + direction, originCol) == null) {
+          return true;
+        }
+      }
+    }
+    if (targetRow == originRow + direction && Math.abs(targetCol - originCol) == 1) {
+      Piece targetPiece = board.getPiece(targetRow, targetCol);
+      if (targetPiece != null) {
+        return targetPiece.getColor() != this.color;
+      }
+    }
+    return false;
   }
 
   @Override
-  public PieceType getType() {
-    return PieceType.PAWN;
+  public Piece copy() {
+    return new Pawn(this.color, this.row, this.col);
   }
 
   @Override
@@ -43,36 +65,13 @@ public class Pawn implements Piece {
   }
 
   @Override
-  public boolean isValidMove(int fromCol, int fromRow, int toCol, int toRow, Board board) {
-    if (fromRow == toRow && fromCol == toCol) {
-      return false;
-    }
-    int direction = (this.color == Piece.Color.WHITE) ? -1 : 1;
-    if (toRow == fromRow + direction && toCol == fromCol) {
-      if (board.getPiece(toRow, toCol) == null) {
-        return true;
-      }
-    }
-    if (((this.color == Piece.Color.WHITE) && fromRow == 6) || ((this.color == Piece.Color.BLACK) && fromRow == 1)) {
-      if (toRow == fromRow + 2 * direction && toCol == fromCol) {
-        if (board.getPiece(toRow, toCol) == null && board.getPiece(fromRow + direction, fromCol) == null) {
-          return true;
-        }
-      }
-    }
-    if (toRow == fromRow + direction && Math.abs(toCol - fromCol) == 1) {
-      Piece targetPiece = board.getPiece(toRow, toCol);
-      if (targetPiece != null) {
-        return targetPiece.getColor() != this.color;
-      }
-    }
-    return false;
+  public Color getColor() {
+    return color;
   }
 
-
   @Override
-  public Piece copy() {
-    return new Pawn(this.color, this.row, this.col);
+  public PieceType getType() {
+    return PieceType.PAWN;
   }
 
   @Override

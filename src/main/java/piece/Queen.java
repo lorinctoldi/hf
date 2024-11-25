@@ -14,13 +14,44 @@ public class Queen implements Piece {
   }
 
   @Override
-  public Color getColor() {
-    return color;
+  public boolean isValidMove(int originCol, int originRow, int targetCol, int targetRow, Board board) {
+    if (originRow == targetRow && originCol == targetCol) {
+      return false;
+    }
+
+    int rowDiff = Math.abs(targetRow - originRow);
+    int colDiff = Math.abs(targetCol - originCol);
+
+    Piece targetPiece = board.getPiece(targetRow, targetCol);
+    if (targetPiece != null && (targetPiece.getColor() == this.color)) {
+      return false;
+    }
+
+    if (rowDiff == 0 || colDiff == 0 || rowDiff == colDiff) {
+      return isPathClear(originCol, originRow, targetCol, targetRow, board);
+    }
+
+    return false;
+  }
+
+  private boolean isPathClear(int originCol, int originRow, int targetCol, int targetRow, Board board) {
+    int rowStep = Integer.compare(targetRow, originRow);
+    int colStep = Integer.compare(targetCol, originCol);
+    int currentRow = originRow + rowStep;
+    int currentCol = originCol + colStep;
+    while (currentRow != targetRow || currentCol != targetCol) {
+      if (board.getPiece(currentRow, currentCol) != null) {
+        return false;
+      }
+      currentRow += rowStep;
+      currentCol += colStep;
+    }
+    return true;
   }
 
   @Override
-  public PieceType getType() {
-    return PieceType.QUEEN;
+  public Piece copy() {
+    return new Queen(this.color, this.row, this.col);
   }
 
   @Override
@@ -44,44 +75,13 @@ public class Queen implements Piece {
   }
 
   @Override
-  public boolean isValidMove(int fromCol, int fromRow, int toCol, int toRow, Board board) {
-    if (fromRow == toRow && fromCol == toCol) {
-      return false;
-    }
-
-    int rowDiff = Math.abs(toRow - fromRow);
-    int colDiff = Math.abs(toCol - fromCol);
-
-    Piece targetPiece = board.getPiece(toRow, toCol);
-    if (targetPiece != null && (targetPiece.getColor() == this.color)) {
-      return false;
-    }
-
-    if (rowDiff == 0 || colDiff == 0 || rowDiff == colDiff) {
-      return isPathClear(fromCol, fromRow, toCol, toRow, board);
-    }
-
-    return false;
-  }
-
-  private boolean isPathClear(int fromCol, int fromRow, int toCol, int toRow, Board board) {
-    int rowStep = Integer.compare(toRow, fromRow);
-    int colStep = Integer.compare(toCol, fromCol);
-    int currentRow = fromRow + rowStep;
-    int currentCol = fromCol + colStep;
-    while (currentRow != toRow || currentCol != toCol) {
-      if (board.getPiece(currentRow, currentCol) != null) {
-        return false;
-      }
-      currentRow += rowStep;
-      currentCol += colStep;
-    }
-    return true;
+  public Color getColor() {
+    return color;
   }
 
   @Override
-  public Piece copy() {
-    return new Queen(this.color, this.row, this.col);
+  public PieceType getType() {
+    return PieceType.QUEEN;
   }
 
   @Override

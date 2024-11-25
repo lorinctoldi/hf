@@ -12,14 +12,39 @@ public class Rook implements Piece {
     this.row = row;
     this.col = col;
   }
+
   @Override
-  public Color getColor() {
-    return color;
+  public boolean isValidMove(int originCol, int originRow, int targetCol, int targetRow, Board board) {
+    if (originRow == targetRow && originCol == targetCol) {
+      return false;
+    }
+    Piece targetPiece = board.getPiece(targetRow, targetCol);
+    if (targetPiece != null && targetPiece.getColor() == this.color)
+      return false;
+    if (originRow == targetRow || originCol == targetCol) {
+      return isPathClear(originCol, originRow, targetCol, targetRow, board);
+    }
+    return false;
+  }
+
+  private boolean isPathClear(int originCol, int originRow, int targetCol, int targetRow, Board board) {
+    int rowStep = Integer.compare(targetRow, originRow);
+    int colStep = Integer.compare(targetCol, originCol);
+    int currentRow = originRow + rowStep;
+    int currentCol = originCol + colStep;
+    while (currentRow != targetRow || currentCol != targetCol) {
+      if (board.getPiece(currentRow, currentCol) != null) {
+        return false;
+      }
+      currentRow += rowStep;
+      currentCol += colStep;
+    }
+    return true;
   }
 
   @Override
-  public PieceType getType() {
-    return PieceType.ROOK;
+  public Piece copy() {
+    return new Rook(this.color, this.row, this.col);
   }
 
   @Override
@@ -43,38 +68,13 @@ public class Rook implements Piece {
   }
 
   @Override
-  public boolean isValidMove(int fromCol, int fromRow, int toCol, int toRow, Board board) {
-    if (fromRow == toRow && fromCol == toCol) {
-      return false;
-    }
-    Piece targetPiece = board.getPiece(toRow, toCol);
-    if (targetPiece != null && targetPiece.getColor() == this.color)
-      return false;
-    if (fromRow == toRow || fromCol == toCol) {
-      return isPathClear(fromCol, fromRow, toCol, toRow, board);
-    }
-    return false;
+  public Color getColor() {
+    return color;
   }
-
-  private boolean isPathClear(int fromCol, int fromRow, int toCol, int toRow, Board board) {
-    int rowStep = Integer.compare(toRow, fromRow);
-    int colStep = Integer.compare(toCol, fromCol);
-    int currentRow = fromRow + rowStep;
-    int currentCol = fromCol + colStep;
-    while (currentRow != toRow || currentCol != toCol) {
-      if (board.getPiece(currentRow, currentCol) != null) {
-        return false;
-      }
-      currentRow += rowStep;
-      currentCol += colStep;
-    }
-    return true;
-  }
-
 
   @Override
-  public Piece copy() {
-    return new Rook(this.color, this.row, this.col);
+  public PieceType getType() {
+    return PieceType.ROOK;
   }
 
   @Override

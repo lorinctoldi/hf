@@ -1,8 +1,5 @@
 package piece;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import board.Board;
 
 public class Bishop implements Piece {
@@ -17,13 +14,40 @@ public class Bishop implements Piece {
   }
 
   @Override
-  public Color getColor() {
-    return color;
+  public boolean isValidMove(int originCol, int originRow, int targetCol, int targetRow, Board board) {
+      if (Math.abs(targetRow - originRow) != Math.abs(targetCol - originCol)) {
+          return false;
+      }
+  
+      int rowStep = Integer.compare(targetRow, originRow);
+      int colStep = Integer.compare(targetCol, originCol);
+  
+      return isPathClear(originCol, originRow, targetCol, targetRow, rowStep, colStep, board);
+  }
+  
+  private boolean isPathClear(int originCol, int originRow, int targetCol, int targetRow, int rowStep, int colStep, Board board) {
+      int currentRow = originRow + rowStep;
+      int currentCol = originCol + colStep;
+  
+      while (currentRow != targetRow && currentCol != targetCol) {
+          if (board.getPiece(currentRow, currentCol) != null) {
+              return false;
+          }
+          currentRow += rowStep;
+          currentCol += colStep;
+      }
+  
+      Piece targetPiece = board.getPiece(targetRow, targetCol);
+      if (targetPiece == null || targetPiece.getColor() != this.color) {
+          return true;
+      }
+  
+      return false;
   }
 
   @Override
-  public PieceType getType() {
-    return PieceType.BISHOP;
+  public Piece copy() {
+    return new Bishop(this.color, this.row, this.col);
   }
 
   @Override
@@ -47,39 +71,13 @@ public class Bishop implements Piece {
   }
 
   @Override
-  public boolean isValidMove(int fromCol, int fromRow, int toCol, int toRow, Board board) {
-      if (Math.abs(toRow - fromRow) != Math.abs(toCol - fromCol)) {
-          return false;
-      }
-  
-      int rowStep = Integer.compare(toRow, fromRow);
-      int colStep = Integer.compare(toCol, fromCol);
-  
-      return isPathClear(fromCol, fromRow, toCol, toRow, rowStep, colStep, board);
+  public Color getColor() {
+    return color;
   }
-  
-  private boolean isPathClear(int fromCol, int fromRow, int toCol, int toRow, int rowStep, int colStep, Board board) {
-      int currentRow = fromRow + rowStep;
-      int currentCol = fromCol + colStep;
-  
-      while (currentRow != toRow && currentCol != toCol) {
-          if (board.getPiece(currentRow, currentCol) != null) {
-              return false;
-          }
-          currentRow += rowStep;
-          currentCol += colStep;
-      }
-  
-      Piece targetPiece = board.getPiece(toRow, toCol);
-      if (targetPiece == null || targetPiece.getColor() != this.color) {
-          return true;
-      }
-  
-      return false;
-  }
+
   @Override
-  public Piece copy() {
-    return new Bishop(this.color, this.row, this.col);
+  public PieceType getType() {
+    return PieceType.BISHOP;
   }
 
   @Override

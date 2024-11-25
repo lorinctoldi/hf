@@ -14,13 +14,58 @@ public class King implements Piece {
   }
 
   @Override
-  public Color getColor() {
-    return color;
+  public boolean isValidMove(int originCol, int originRow, int targetCol, int targetRow, Board board) {
+    if (Math.abs(targetRow - originRow) <= 1 && Math.abs(targetCol - originCol) <= 1) {
+      Piece targetPiece = board.getPiece(targetRow, targetCol);
+      if (targetPiece != null && targetPiece.getColor() == this.color) {
+        return false;
+      }
+
+      for (int r = targetRow - 1; r <= targetRow + 1; r++) {
+        for (int c = targetCol - 1; c <= targetCol + 1; c++) {
+          if (r >= 0 && r < 8 && c >= 0 && c < 8) {
+            Piece piece = board.getPiece(r, c);
+
+            if (piece != null && piece.getType() == PieceType.KING && piece.getColor() != this.color) {
+              return false;
+            }
+          }
+        }
+      }
+
+      if(board.willKingBeInCheck(originCol, originRow, targetCol, targetRow, this.color)) return false;
+      return true;
+    }
+
+    if (originRow == targetRow && Math.abs(targetCol - originCol) == 2) {
+      if (board.hasKingMoved(this.color) || board.hasRookMoved(this.color, targetCol > originCol)) {
+        return false;
+      }
+  
+      int direction = (targetCol > originCol) ? 1 : -1;
+      int rookCol = (targetCol > originCol) ? 7 : 0;
+  
+      for (int col = originCol + direction; col != rookCol; col += direction) {
+        if (board.getPiece(originRow, col) != null) {
+          return false;
+        }
+      }
+  
+      for (int col = originCol + direction; col <= rookCol; col += direction) {
+        if (board.isSquareUnderAttack(originRow, col, this.color)) {
+          return false;
+        }
+      }
+  
+  
+      return true;
+    }
+    return false;
   }
 
   @Override
-  public PieceType getType() {
-    return PieceType.KING;
+  public Piece copy() {
+    return new King(this.color, this.row, this.col);
   }
 
   @Override
@@ -44,58 +89,13 @@ public class King implements Piece {
   }
 
   @Override
-  public boolean isValidMove(int fromCol, int fromRow, int toCol, int toRow, Board board) {
-    if (Math.abs(toRow - fromRow) <= 1 && Math.abs(toCol - fromCol) <= 1) {
-      Piece targetPiece = board.getPiece(toRow, toCol);
-      if (targetPiece != null && targetPiece.getColor() == this.color) {
-        return false;
-      }
-
-      for (int r = toRow - 1; r <= toRow + 1; r++) {
-        for (int c = toCol - 1; c <= toCol + 1; c++) {
-          if (r >= 0 && r < 8 && c >= 0 && c < 8) {
-            Piece piece = board.getPiece(r, c);
-
-            if (piece != null && piece.getType() == PieceType.KING && piece.getColor() != this.color) {
-              return false;
-            }
-          }
-        }
-      }
-
-      if(board.willKingBeInCheck(fromCol, fromRow, toCol, toRow, this.color)) return false;
-      return true;
-    }
-
-    if (fromRow == toRow && Math.abs(toCol - fromCol) == 2) {
-      if (board.hasKingMoved(this.color) || board.hasRookMoved(this.color, toCol > fromCol)) {
-        return false;
-      }
-  
-      int direction = (toCol > fromCol) ? 1 : -1;
-      int rookCol = (toCol > fromCol) ? 7 : 0;
-  
-      for (int col = fromCol + direction; col != rookCol; col += direction) {
-        if (board.getPiece(fromRow, col) != null) {
-          return false;
-        }
-      }
-  
-      for (int col = fromCol + direction; col <= rookCol; col += direction) {
-        if (board.isSquareUnderAttack(fromRow, col, this.color)) {
-          return false;
-        }
-      }
-  
-  
-      return true;
-    }
-    return false;
+  public Color getColor() {
+    return color;
   }
 
   @Override
-  public Piece copy() {
-    return new King(this.color, this.row, this.col);
+  public PieceType getType() {
+    return PieceType.KING;
   }
 
   @Override

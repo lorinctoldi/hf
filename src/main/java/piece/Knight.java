@@ -12,14 +12,24 @@ public class Knight implements Piece {
     this.row = row;
     this.col = col;
   }
-  @Override
-  public Color getColor() {
-    return color;
-  }
 
   @Override
-  public PieceType getType() {
-    return PieceType.KNIGHT;
+  public boolean isValidMove(int originCol, int originRow, int targetCol, int targetRow, Board board) {
+    if(originRow == targetRow && originCol == targetCol) {
+      return false;
+    }
+      int rowDiff = Math.abs(targetRow - originRow);
+      int colDiff = Math.abs(targetCol - originCol);
+      boolean isLShapeMove = (rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2);
+
+      Piece targetPiece = board.getPiece(targetRow, targetCol);
+
+      return isLShapeMove && (targetPiece == null || targetPiece.getColor() != this.color);
+  }
+
+    @Override
+  public Piece copy() {
+    return new Knight(this.color, this.row, this.col);
   }
 
   @Override
@@ -43,25 +53,14 @@ public class Knight implements Piece {
   }
 
   @Override
-  public boolean isValidMove(int fromCol, int fromRow, int toCol, int toRow, Board board) {
-    if(fromRow == toRow && fromCol == toCol) {
-      return false;
-    }
-      int rowDiff = Math.abs(toRow - fromRow);
-      int colDiff = Math.abs(toCol - fromCol);
-      boolean isLShapeMove = (rowDiff == 2 && colDiff == 1) || (rowDiff == 1 && colDiff == 2);
-
-      Piece targetPiece = board.getPiece(toRow, toCol);
-
-      return isLShapeMove && (targetPiece == null || targetPiece.getColor() != this.color);
+  public Color getColor() {
+    return color;
   }
-
 
   @Override
-  public Piece copy() {
-    return new Knight(this.color, this.row, this.col);
+  public PieceType getType() {
+    return PieceType.KNIGHT;
   }
-
 
   @Override
   public String toString() {
