@@ -15,7 +15,6 @@ public MenuView(Menu model) {
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        // Set the background color of the panel (MenuView)
         setBackground(new Color(0, 0, 0, 0)); 
 
         ArrayList<String> options = model.getOptions();
@@ -25,13 +24,12 @@ public MenuView(Menu model) {
             button.setForeground(new Color(148, 148, 148));
             button.setFont(new Font("Arial", Font.PLAIN, 18));
 
-            // Set the button background color and make it opaque
-            button.setBackground(new Color(57, 55, 51)); // Button background color (adjust as needed)
+            button.setBackground(new Color(57, 55, 51));
             button.setOpaque(true);
-            button.setBorderPainted(false); // Remove the border to avoid default white background around text
-            button.setUI(new BasicButtonUI()); // Override default button UI to ensure consistent behavior
+            button.setBorderPainted(false);
+            button.setUI(new BasicButtonUI());
 
-            Dimension buttonSize = new Dimension(260, 40); // Adjust width (200) and height (50) as needed
+            Dimension buttonSize = new Dimension(260, 40);
             button.setPreferredSize(buttonSize);
             button.setMinimumSize(buttonSize);
             button.setMaximumSize(buttonSize);

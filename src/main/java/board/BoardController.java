@@ -65,8 +65,6 @@ public class BoardController {
         Piece piece = board.getPiece(selectedRow, selectedCol);
         if (piece != null && piece.getColor() == board.getTurn()) {
             highlightValidMoves(selectedRow, selectedCol);
-        } else {
-            System.out.println("No piece at selected position: " + selectedRow + "," + selectedCol);
         }
     }
 
@@ -128,10 +126,9 @@ public class BoardController {
         Piece piece = board.getPiece(originRow, originCol);
 
         if (piece.getType() == Piece.PieceType.KING && Math.abs(targetCol - originCol) == 2) {
-            int rookCol = (targetCol > originCol) ? 7 : 0; // Determine which rook is involved
+            int rookCol = (targetCol > originCol) ? 7 : 0;
             int rookTargetCol = (targetCol > originCol) ? targetCol - 1 : targetCol + 1;
 
-            // Move the rook
             Piece rook = board.getPiece(originRow, rookCol);
             board.setPiece(originRow, rookTargetCol, rook);
             board.setPiece(originRow, rookCol, null);
@@ -168,21 +165,16 @@ public class BoardController {
     }
 
     private void highlightValidMoves(int originRow, int originCol) {
-        // Clear previous highlights
         resetTileColors();
 
-        // Get the piece at the selected position
         Piece piece = board.getPiece(originRow, originCol);
 
         if (piece != null) {
-            // Highlight the tile where the piece currently stands
             JPanel currentTile = (JPanel) boardView.getComponent(originRow * 8 + originCol);
-            currentTile.setBackground(new Color(147, 177, 120)); // Highlight color for the current piece position
+            currentTile.setBackground(new Color(147, 177, 120));
 
-            // Loop through all possible board positions to highlight valid moves
             for (int row = 0; row < 8; row++) {
                 for (int col = 0; col < 8; col++) {
-                    // If this is a valid move for the selected piece, highlight the tile
                     if (piece.isValidMove(originCol, originRow, col, row, board)) {
                         JPanel tile = (JPanel) boardView.getComponent(row * 8 + col);
                         tile.setBackground(new Color(147, 177, 120));
@@ -196,7 +188,6 @@ public class BoardController {
         Piece.Color robotColor = board.getTurn();
         ArrayList<int[]> possibleMoves = new ArrayList<>();
 
-        // Find all possible moves
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 Piece piece = board.getPiece(row, col);
@@ -212,7 +203,6 @@ public class BoardController {
             }
         }
 
-        // Select a random move
         if(possibleMoves.size() == 0) {
             if (isDraw()) {
                 JOptionPane.showMessageDialog(null, "The game is a draw!");
@@ -230,7 +220,6 @@ public class BoardController {
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Perform the move
                 int originCol = chosenMove[0];
                 int originRow = chosenMove[1];
                 int targetCol = chosenMove[2];
@@ -239,13 +228,12 @@ public class BoardController {
                 gameController.addMove(originCol, originRow, targetCol, targetRow);
                 performMove(originCol, originRow, targetCol, targetRow);
     
-                // Stop the timer after the move
                 ((Timer) e.getSource()).stop();
             }
         });
     
-        timer.setRepeats(false); // Ensure the timer only runs once
-        timer.start(); // Start the timer
+        timer.setRepeats(false);
+        timer.start();
     }
 
     public boolean isMate() {

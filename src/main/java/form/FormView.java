@@ -14,13 +14,12 @@ public class FormView extends JPanel {
     public FormView(Form model) {
         setBackground(new Color(0, 0, 0, 0));
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20)); // Padding around the form
+        setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
         nameField = createTextField(model.getName(), "Adja meg a nevét..");
 
         eloField = createTextField(model.getElo() == 0 ? "" : String.valueOf(model.getElo()), "Adja meg az ELO számát...");
 
-        // Buttons
         submitButton = createButton("Tovább");
         cancelButton = createButton("Vissza");
 
@@ -29,35 +28,31 @@ public class FormView extends JPanel {
         submitButton.setAlignmentX(CENTER_ALIGNMENT);
         cancelButton.setAlignmentX(CENTER_ALIGNMENT);
 
-        // Add components to the panel with 20px space between each element
         add(nameField);
-        add(Box.createRigidArea(new Dimension(0, 10))); // Space between elements
+        add(Box.createRigidArea(new Dimension(0, 10)));
         add(eloField);
-        add(Box.createRigidArea(new Dimension(0, 20))); // Space between elements
+        add(Box.createRigidArea(new Dimension(0, 20)));
         add(submitButton);
-        add(Box.createRigidArea(new Dimension(0, 20))); // Space between elements
+        add(Box.createRigidArea(new Dimension(0, 20)));
         add(cancelButton);
     }
 
 
     private JTextField createTextField(String text, String placeholder) {
         JTextField textField = new JTextField(text, 20);
-        textField.setFont(new Font("Arial", Font.PLAIN, 16)); // Set font for text fields
+        textField.setFont(new Font("Arial", Font.PLAIN, 16));
         textField.setForeground(Color.WHITE);
-        textField.setBackground(new Color(57, 55, 51)); // Dark background for text fields
-        textField.setCaretColor(Color.WHITE); // Set the caret (cursor) color to white
-        textField.setPreferredSize(new Dimension(260, 40)); // Set width to 260px
-        textField.setMaximumSize(new Dimension(260, 40)); // Set width to 260px
-        textField.setMinimumSize(new Dimension(260, 40)); // Set width to 260px
+        textField.setBackground(new Color(57, 55, 51));
+        textField.setCaretColor(Color.WHITE);
+        textField.setPreferredSize(new Dimension(260, 40));
+        textField.setMaximumSize(new Dimension(260, 40));
+        textField.setMinimumSize(new Dimension(260, 40));
 
-        // Set placeholder text when field is empty
         setPlaceholder(textField, placeholder);
 
-        // Add focus listener to handle placeholder text behavior
         textField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                // Remove placeholder text when the field is focused
                 if (textField.getText().equals(placeholder)) {
                     textField.setText("");
                     textField.setForeground(Color.WHITE);
@@ -66,7 +61,6 @@ public class FormView extends JPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                // Reapply placeholder if the field is empty
                 if (textField.getText().isEmpty()) {
                     setPlaceholder(textField, placeholder);
                 }
@@ -76,24 +70,23 @@ public class FormView extends JPanel {
         return textField;
     }
 
-    // Helper method to set placeholder text
     private void setPlaceholder(JTextField textField, String placeholder) {
         textField.setText(placeholder);
-        textField.setForeground(new Color(148, 148, 148)); // Set placeholder text color (light gray)
+        textField.setForeground(new Color(148, 148, 148));
     }
 
     private JButton createButton(String text) {
         JButton button = new JButton(text);
-        button.setFont(new Font("Arial", Font.PLAIN, 18)); // Set font for buttons
-        button.setForeground(new Color(148, 148, 148)); // Button text color
-        button.setBackground(new Color(57, 55, 51)); // Button background color
+        button.setFont(new Font("Arial", Font.PLAIN, 18));
+        button.setForeground(new Color(148, 148, 148));
+        button.setBackground(new Color(57, 55, 51));
         button.setOpaque(true);
-        button.setBorderPainted(false); // Remove border
-        button.setUI(new javax.swing.plaf.basic.BasicButtonUI()); // Remove default button look
-        button.setPreferredSize(new Dimension(260, 40)); // Set button width to 260px
+        button.setBorderPainted(false);
+        button.setUI(new javax.swing.plaf.basic.BasicButtonUI());
+        button.setPreferredSize(new Dimension(260, 40));
         button.setMinimumSize(new Dimension(260, 40));
         button.setMaximumSize(new Dimension(260, 40));
-        button.setFocusable(false); // Prevent focus outline
+        button.setFocusable(false);
         return button;
     }
 

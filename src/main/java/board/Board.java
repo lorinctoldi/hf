@@ -18,18 +18,14 @@ public class Board {
   }
 
   public Board(Board other) {
-    // Copy the current turn
     this.turn = other.turn;
 
-    // Initialize the pieces ArrayList
     this.pieces = new ArrayList<>(8);
 
-    // Deep copy the pieces from the other board
     for (int row = 0; row < 8; row++) {
       ArrayList<Piece> rowPieces = new ArrayList<>(8);
       for (int col = 0; col < 8; col++) {
         Piece piece = other.getPiece(row, col);
-        // Copy the piece if it exists, otherwise add null
         if (piece != null) {
           rowPieces.add(piece.copy());
         } else {
@@ -47,7 +43,7 @@ public class Board {
     blackKingMoved = false;
 
     for(int i = 0; i < 2; i++) {
-      whiteRookMoved[i] = false; // Left rook
+      whiteRookMoved[i] = false;
       blackRookMoved[i] = false;
     }
 
@@ -107,14 +103,14 @@ public class Board {
         } else if (piece.getType() == Piece.PieceType.ROOK) {
           if (piece.getColor() == Piece.Color.WHITE) {
             if (row == 7 && col == 0)
-              whiteRookMoved[0] = true; // Left rook
+              whiteRookMoved[0] = true;
             if (row == 7 && col == 7)
-              whiteRookMoved[1] = true; // Right rook
+              whiteRookMoved[1] = true;
           } else {
             if (row == 0 && col == 0)
-              blackRookMoved[0] = true; // Left rook
+              blackRookMoved[0] = true;
             if (row == 0 && col == 7)
-              blackRookMoved[1] = true; // Right rook
+              blackRookMoved[1] = true;
           }
         }
       }
@@ -164,7 +160,6 @@ public class Board {
   }
 
   public boolean isMate(Piece.Color color) {
-    // Loop through the board to find the king of the given color
     int kingRow = -1;
     int kingCol = -1;
     for (int r = 0; r < 8; r++) {
@@ -180,9 +175,7 @@ public class Board {
         break;
     }
 
-    // Check if the king is currently in check
     if (kingRow != -1 && isSquareUnderAttack(kingRow, kingCol, color)) {
-      // If the king is in check, we need to check if there are any valid moves left
       for (int r = 0; r < 8; r++) {
         for (int c = 0; c < 8; c++) {
           Piece piece = getPiece(r, c);
@@ -193,31 +186,28 @@ public class Board {
             for (int c2 = 0; c2 < 8; c2++) {
               if (r == r2 && c == c2 || !piece.isValidMove(c, r, c2, r2, this))
                 continue;
-              // Simulate the move and check if it results in the king being in check
               if (!willKingBeInCheck(c, r, c2, r2, color)) {
-                return false; // Found a valid move that doesn't put the king in check
+                return false;
               }
             }
           }
         }
       }
-      return true; // No valid moves, it's checkmate
+      return true;
     }
 
-    return false; // The king is not in check, it's not checkmate
+    return false;
   }
 
   public boolean isDraw(Piece.Color color) {
-    // Check for stalemate and insufficient material
     if (isStalemate(color) || isInsufficientMaterial(color)) {
       return true;
     }
 
-    return false; // No draw
+    return false;
   }
 
   public boolean isStalemate(Piece.Color color) {
-    // Loop through the board to check if the king is in check
     int kingRow = -1;
     int kingCol = -1;
     for (int r = 0; r < 8; r++) {
@@ -233,13 +223,10 @@ public class Board {
         break;
     }
 
-    // If the king is in check, it's not stalemate
     if (kingRow != -1 && isSquareUnderAttack(kingRow, kingCol, color)) {
       return false;
     }
 
-    // Loop through all pieces of the current color to see if they have any valid
-    // moves
     for (int r = 0; r < 8; r++) {
       for (int c = 0; c < 8; c++) {
         Piece piece = getPiece(r, c);
@@ -250,23 +237,21 @@ public class Board {
           for (int c2 = 0; c2 < 8; c2++) {
             if (r == r2 && c == c2 || !piece.isValidMove(c, r, c2, r2, this))
               continue;
-            // Try the move and check if it results in the king being in check
             if (!willKingBeInCheck(c, r, c2, r2, color)) {
-              return false; // Found a valid move, it's not stalemate
+              return false;
             }
           }
         }
       }
     }
 
-    return true; // No valid moves, it's stalemate
+    return true;
   }
 
   public boolean isInsufficientMaterial(Piece.Color color) {
     int whiteMaterial = 0;
     int blackMaterial = 0;
 
-    // Count the material for both sides
     for (int r = 0; r < 8; r++) {
       for (int c = 0; c < 8; c++) {
         Piece piece = getPiece(r, c);

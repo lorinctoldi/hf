@@ -18,7 +18,7 @@ public class MoveController {
     this.moves = new ArrayList<>();
     movePanel = new JPanel();
     movePanel.setLayout(new BoxLayout(movePanel, BoxLayout.Y_AXIS));
-    movePanel.setOpaque(true);  // Ensure the panel is opaque so that the background color is visible
+    movePanel.setOpaque(true);
     movePanel.setBackground(new Color(57, 55, 51));
   }
 
@@ -55,7 +55,6 @@ public class MoveController {
     JScrollPane scrollPane = new JScrollPane(movePanel);
     scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     
-    // Set vertical scrollbar to appear as needed
     scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
     scrollPane.setPreferredSize(new Dimension(300, 200));
     scrollPane.setMaximumSize(new Dimension(300, 200));

@@ -53,13 +53,11 @@ public class King implements Piece {
 
       for (int r = toRow - 1; r <= toRow + 1; r++) {
         for (int c = toCol - 1; c <= toCol + 1; c++) {
-          // Ensure the cell is within bounds
           if (r >= 0 && r < 8 && c >= 0 && c < 8) {
             Piece piece = board.getPiece(r, c);
 
-            // Check if there's an opposing king in any adjacent cell
             if (piece != null && piece.getType() == PieceType.KING && piece.getColor() != this.color) {
-              return false; // Target square is under attack by the opposing king
+              return false;
             }
           }
         }
@@ -75,24 +73,22 @@ public class King implements Piece {
       }
   
       int direction = (toCol > fromCol) ? 1 : -1;
-      int rookCol = (toCol > fromCol) ? 7 : 0; // Rook's column: 7 for long-side castling, 0 for short-side castling
+      int rookCol = (toCol > fromCol) ? 7 : 0;
   
-      // Check that all squares between the king and the rook are free of pieces (up to the rook's column)
       for (int col = fromCol + direction; col != rookCol; col += direction) {
         if (board.getPiece(fromRow, col) != null) {
-          return false; // There are pieces between the king and rook
+          return false;
         }
       }
   
-      // Check that the king does not pass through or land on a square under attack
       for (int col = fromCol + direction; col <= rookCol; col += direction) {
         if (board.isSquareUnderAttack(fromRow, col, this.color)) {
-          return false; // The king would pass through or land on an attacked square
+          return false;
         }
       }
   
   
-      return true; // Castling is valid
+      return true;
     }
     return false;
   }
