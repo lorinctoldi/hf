@@ -109,7 +109,7 @@ public class GameController {
     boardController.getView().revalidate();
     moveController.deleteMovesAfter(upToIndex);
 
-    if(upToIndex % 2 == 0) boardController.robotMove();
+    if(upToIndex % 2 == 0 && !boardController.isDraw() && !boardController.isMate()) boardController.robotMove();
   }
 
   public void setMoves(ArrayList<Move> moves) {

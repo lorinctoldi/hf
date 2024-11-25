@@ -106,9 +106,8 @@ public class BoardController {
         if (board.willKingBeInCheck(originCol, originRow, targetCol, targetRow, board.getTurn()))
             return false;
 
-        // Handle castling
         if (piece.getType() == Piece.PieceType.KING && Math.abs(targetCol - originCol) == 2) {
-            int rookCol = (targetCol > originCol) ? 7 : 0; // Determine the rook's column
+            int rookCol = (targetCol > originCol) ? 7 : 0;
             if (!board.canCastle(piece.getColor(), rookCol)) {
                 return false;
             }
@@ -154,10 +153,10 @@ public class BoardController {
         boardView.repaint();
         boardView.revalidate();
 
-        if (board.isDraw(board.getTurn())) {
+        if (isDraw()) {
             JOptionPane.showMessageDialog(null, "The game is a draw!");
         }
-        if (board.isMate(board.getTurn())) {
+        if (isMate()) {
             String winner = (board.getTurn() == Piece.Color.WHITE) ? "Black" : "White";
             JOptionPane.showMessageDialog(null, winner + " wins! Checkmate!");
         }
@@ -214,6 +213,16 @@ public class BoardController {
         }
 
         // Select a random move
+        if(possibleMoves.size() == 0) {
+            if (isDraw()) {
+                JOptionPane.showMessageDialog(null, "The game is a draw!");
+            }
+            if (isMate()) {
+                String winner = (board.getTurn() == Piece.Color.WHITE) ? "Black" : "White";
+                JOptionPane.showMessageDialog(null, winner + " wins! Checkmate!");
+            }
+            return;
+        }
         Random random = new Random(possibleMoves.size());
         int[] chosenMove = possibleMoves.get(random.nextInt(possibleMoves.size()));
 
@@ -225,6 +234,14 @@ public class BoardController {
 
         gameController.addMove(originCol, originRow, targetCol, targetRow);
         performMove(originCol, originRow, targetCol, targetRow);
+    }
+
+    public boolean isMate() {
+        return this.board.isMate(this.board.getTurn());
+    }
+
+    public boolean isDraw() {
+        return this.board.isDraw(this.board.getTurn());
     }
 
     private void resetTileColors() {
