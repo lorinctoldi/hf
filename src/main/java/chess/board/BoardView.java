@@ -5,16 +5,16 @@ import java.awt.*;
 
 import chess.piece.*;
 
-/**
- * Konstruktor, amely inicializálja a táblát, beállítja a rácsot és megjeleníti
- * a kezdeti állapotot.
- * 
- * @param board a Board objektum, amely tartalmazza a játék aktuális állapotát
- */
 public class BoardView extends JPanel {
     private Board board;
     public int BOARD_SIZE = 800;
 
+    /**
+     * Konstruktor, amely inicializálja a táblát, beállítja a grid-et és megjeleníti
+     * a kezdeti állapotot.
+     * 
+     * @param board a Board objektum, amely tartalmazza a játék aktuális állapotát
+     */
     public BoardView(Board board) {
         this.board = board;
         this.setLayout(new GridLayout(8, 8));

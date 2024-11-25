@@ -59,7 +59,7 @@ class KnightTest {
 
     /**
      * Teszteli, hogy a ló képes elkapni egy ellenfél bábút.
-     * Ellenőrzi, hogy a ló képes-e elfogni egy ellenséges gyalogot a helyes
+     * Ellenőrzi, hogy a ló képes-e levenni egy ellenséges gyalogot a helyes
      * lépéssel.
      */
     @Test
@@ -71,8 +71,8 @@ class KnightTest {
     }
 
     /**
-     * Teszteli, hogy a ló nem foglalhatja el a saját bábuját.
-     * Ellenőrzi, hogy a ló megakadályozza a saját bábu elfogását.
+     * Teszteli, hogy a ló nem ütheti le a saját bábuját.
+     * Ellenőrzi, hogy a ló megakadályozza a saját bábu leütését.
      */
     @Test
     void testCannotCaptureOwnPiece() {

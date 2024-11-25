@@ -8,7 +8,7 @@ public class Bishop implements Piece {
   private int col;
 
   /**
-   * Konstruktor, amely inicializálja a bástya színét, sorát és oszlopát.
+   * Konstruktor, amely inicializálja a futó színét, sorát és oszlopát.
    * 
    * @param color A bábu színe.
    * @param row   A bábu kezdő sora.
@@ -21,8 +21,8 @@ public class Bishop implements Piece {
   }
 
   /**
-   * Ellenőrzi, hogy a megadott lépés érvényes-e a bástya számára.
-   * A bástya csak átlósan mozoghat, és az útjában nem lehet másik bábú.
+   * Ellenőrzi, hogy a megadott lépés érvényes-e a futó számára.
+   * A futó csak átlósan mozoghat, és az útjában nem lehet másik bábú.
    * 
    * @param originCol Az eredeti oszlop.
    * @param originRow Az eredeti sor.
@@ -44,8 +44,8 @@ public class Bishop implements Piece {
   }
 
   /**
-   * Ellenőrzi, hogy a bástya útja tiszta-e a kezdő és a cél pozíció között.
-   * A bástya úton lévő mezőknek üresnek kell lenniük.
+   * Ellenőrzi, hogy a futó útja tiszta-e a kezdő és a cél pozíció között.
+   * A futó úton lévő mezőknek üresnek kell lenniük.
    * 
    * @param originCol Az eredeti oszlop.
    * @param originRow Az eredeti sor.
@@ -78,9 +78,9 @@ public class Bishop implements Piece {
   }
 
   /**
-   * Létrehoz egy új példányt a bástyáról a jelenlegi pozícióval és színnel.
+   * Létrehoz egy új példányt a futótól a jelenlegi pozícióval és színnel.
    * 
-   * @return A bástya másolatát.
+   * @return A futó másolatát.
    */
   @Override
   public Piece copy() {
@@ -140,7 +140,7 @@ public class Bishop implements Piece {
   /**
    * Visszaadja a bábu típusát.
    * 
-   * @return A bábu típusa, jelen esetben a BÁSTYA.
+   * @return A bábu típusa, jelen esetben a futó.
    */
   @Override
   public PieceType getType() {
@@ -148,12 +148,12 @@ public class Bishop implements Piece {
   }
 
   /**
-   * Összehasonlítja a bástyát egy másik objektummal, hogy meghatározza,
+   * Összehasonlítja a futót egy másik objektummal, hogy meghatározza,
    * egyenlők-e.
-   * Két bástya akkor egyenlő, ha ugyanazon színűek és típusúak.
+   * Két futó akkor egyenlő, ha ugyanazon színűek és típusúak.
    * 
    * @param obj A másik objektum.
-   * @return true, ha az objektum ugyanazt a bástyát jelenti, különben false.
+   * @return true, ha az objektum ugyanazt a futót jelenti, különben false.
    */
   @Override
   public boolean equals(Object obj) {
@@ -168,9 +168,9 @@ public class Bishop implements Piece {
   }
 
   /**
-   * Visszaadja a bástya színét és típusát szöveges formában.
+   * Visszaadja a futó színét és típusát szöveges formában.
    * 
-   * @return A bástya színe és típusa.
+   * @return A futó színe és típusa.
    */
   @Override
   public String toString() {

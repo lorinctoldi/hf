@@ -21,7 +21,7 @@ class BishopTest {
 
         boolean isValid = bishop.isValidMove(4, 4, 5, 5, board);
 
-        assertTrue(isValid, "A futónak érvényes mozgást kell végrehajtania, ha az útvonal szabad.");
+        assertTrue(isValid);
     }
 
     /**
@@ -35,7 +35,7 @@ class BishopTest {
 
         boolean isValid = bishop.isValidMove(4, 4, 5, 6, board);
 
-        assertFalse(isValid, "A futó csak átlósan mozoghat.");
+        assertFalse(isValid);
     }
 
     /**
@@ -50,13 +50,13 @@ class BishopTest {
 
         boolean isValid = bishop.isValidMove(0, 0, 7, 7, board);
 
-        assertFalse(isValid, "A futónak nem szabad érvényes mozgást végrehajtania, ha az útvonal blokkolva van.");
+        assertFalse(isValid);
     }
 
     /**
-     * Teszteli, hogy a futó képes elkapni egy ellenfél bábút.
+     * Teszteli, hogy a futó képes leütni egy ellenfél bábút.
      * Ellenőrzi, hogy a futó helyesen végrehajt egy érvényes lépést, ha egy
-     * ellenfél bábut vesz fel.
+     * ellenfél bábut üt fel.
      */
     @Test
     void testCaptureOpponentPiece() {
@@ -65,12 +65,12 @@ class BishopTest {
 
         boolean isValid = bishop.isValidMove(4, 4, 1, 1, board);
 
-        assertTrue(isValid, "A futónak el kell tudnia foglalni egy ellenfél bábut.");
+        assertTrue(isValid);
     }
 
     /**
-     * Teszteli, hogy a futó nem foglalhatja el a saját bábuját.
-     * Ellenőrzi, hogy a futó helyesen megakadályozza a saját bábu elfogását.
+     * Teszteli, hogy a futó nem ütheti le a saját bábuját.
+     * Ellenőrzi, hogy a futó helyesen megakadályozza a saját bábu leütését.
      */
     @Test
     void testCannotCaptureOwnPiece() {
@@ -79,6 +79,6 @@ class BishopTest {
 
         boolean isValid = bishop.isValidMove(7, 7, 6, 6, board);
 
-        assertFalse(isValid, "A futó nem foglalhatja el a saját bábut.");
+        assertFalse(isValid);
     }
 }

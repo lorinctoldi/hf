@@ -21,7 +21,7 @@ public class Game {
    * vezérlője.
    * A konstruktornak átadott név és Elo érték alapján hozza létre az emberi
    * játékost.
-   * Az "Robot" nevű mesterséges intelligencia játékos is létrejön.
+   * A "Robot" nevű gépi játékos is létrejön.
    * 
    * @param name a játékos neve
    * @param elo  a játékos Elo értéke

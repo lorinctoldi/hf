@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * A Rook (bástya) osztály tesztelésére szolgáló osztály.
- * A tesztek célja a torony bábú mozgásainak és szabályainak ellenőrzése.
+ * A tesztek célja a bástya bábú mozgásainak és szabályainak ellenőrzése.
  */
 class RookTest {
     private Board board;
@@ -38,7 +38,7 @@ class RookTest {
     }
 
     /**
-     * Teszteli a torony érvényes függőleges mozgását.
+     * Teszteli a bástya érvényes függőleges mozgását.
      */
     @Test
     void testValidVerticalMove() {
@@ -47,7 +47,7 @@ class RookTest {
     }
 
     /**
-     * Teszteli, hogy a torony érvénytelen mozgásokat hajt-e végre.
+     * Teszteli, hogy a bástya érvénytelen mozgásokat hajt-e végre.
      */
     @Test
     void testInvalidMove() {
@@ -56,7 +56,7 @@ class RookTest {
     }
 
     /**
-     * Teszteli, hogy a torony útja blokkolva van-e vízszintes mozgás közben.
+     * Teszteli, hogy a bástya útja blokkolva van-e vízszintes mozgás közben.
      */
     @Test
     void testBlockedPathHorizontal() {
@@ -65,7 +65,7 @@ class RookTest {
     }
 
     /**
-     * Teszteli, hogy a torony útja blokkolva van-e függőleges mozgás közben.
+     * Teszteli, hogy a bástya útja blokkolva van-e függőleges mozgás közben.
      */
     @Test
     void testBlockedPathVertical() {
@@ -74,7 +74,7 @@ class RookTest {
     }
 
     /**
-     * Teszteli, hogy a torony képes-e elfogni egy ellenfelet.
+     * Teszteli, hogy a bástya képes-e levenni egy ellenfelet.
      */
     @Test
     void testCaptureOpponent() {
@@ -82,7 +82,7 @@ class RookTest {
     }
 
     /**
-     * Teszteli, hogy a torony nem tudja-e elfogni a saját bábuját.
+     * Teszteli, hogy a bástya nem tudja-e levenni a saját bábuját.
      */
     @Test
     void testCaptureFriendly() {
@@ -91,7 +91,7 @@ class RookTest {
     }
 
     /**
-     * Teszteli a torony másolatának készítését.
+     * Teszteli a bástya másolatának készítését.
      */
     @Test
     void testCopy() {
@@ -102,7 +102,7 @@ class RookTest {
     }
 
     /**
-     * Teszteli a torony `toString` metódusát.
+     * Teszteli a bástya `toString` metódusát.
      */
     @Test
     void testToString() {

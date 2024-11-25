@@ -13,16 +13,16 @@ public class Form {
     }
 
     /**
-     * Visszaadja a form neve értékét.
+     * Visszaadja a formban tárolt név értékét.
      * 
-     * @return a form neve
+     * @return a formban tárolt név értéke
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Beállítja a form nevét.
+     * Beállítja a formban tárolt nevet.
      * 
      * @param name a beállítandó név
      */
@@ -31,7 +31,7 @@ public class Form {
     }
 
     /**
-     * Visszaadja a form Elo pontját.
+     * Visszaadja a formban tárolt Elo pontot.
      * 
      * @return az Elo pontszám
      */
@@ -40,7 +40,7 @@ public class Form {
     }
 
     /**
-     * Beállítja a form Elo pontját.
+     * Beállítja a formban tárolt ELO pontot.
      * 
      * @param elo a beállítandó Elo pontszám
      */

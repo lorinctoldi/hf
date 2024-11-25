@@ -82,7 +82,7 @@ public class GameController {
 
   /**
    * Elmenti a játék állapotát egy fájlba, beleértve a játékos nevét,
-   * Elo értékét és az összes végrehajtott lépést.
+   * ELO értékét és az összes végrehajtott lépést.
    * 
    * @param file a fájl, ahová mentjük a játékot
    */

@@ -146,7 +146,7 @@ public class BoardTest {
     }
 
     /**
-     * Teszteli, hogy a játékban van-e elég anyag.
+     * Teszteli, hogy a játékban van-e elég bábu.
      */
     @Test
     public void testIsInsufficientMaterial() {
@@ -195,7 +195,7 @@ public class BoardTest {
     }
 
     /**
-     * Teszteli, hogy a játékos rokázhat-e.
+     * Teszteli, hogy a játékos sáncolt-e.
      */
     @Test
     public void testCanCastle() {

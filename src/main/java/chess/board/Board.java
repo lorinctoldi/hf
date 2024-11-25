@@ -48,7 +48,7 @@ public class Board {
   }
 
   /**
-   * Inicializálja a sakktáblát az alaphelyzetbe.
+   * Inicializálja a sakktáblát alaphelyzetbe.
    */
   public void initializeBoard() {
     this.turn = Piece.Color.WHITE;
@@ -210,6 +210,12 @@ public class Board {
     return false;
   }
 
+  /**
+   * Ellenőrzi, hogy a játék mattal végződött-e (mate)
+   * 
+   * @param color a vizsgálandó szín
+   * @return true, ha a vizsgált színű játékos nyert, egyébként false
+   */
   public boolean isMate(Piece.Color color) {
     int kingRow = -1;
     int kingCol = -1;
@@ -252,8 +258,7 @@ public class Board {
   }
 
   /**
-   * Ellenőrzi, hogy a játék döntetlen (stalemate) vagy nincs elegendő anyagi
-   * előny
+   * Ellenőrzi, hogy a játék döntetlen (stalemate) vagy nincs elegendő bábu a táblán
    * egyik játékos számára sem.
    * 
    * @param color a vizsgálandó szín
@@ -268,7 +273,7 @@ public class Board {
   }
 
   /**
-   * Ellenőrzi, hogy a megadott színű játékos döntetlent (stalemate) kapott-e.
+   * Ellenőrzi, hogy a megadott színű játékos döntetlent (stalemate) helyzetbe került-e.
    * A döntetlen akkor következik be, ha a király nincs sakkban, de nincs elérhető
    * lépés.
    * 
@@ -317,11 +322,11 @@ public class Board {
   }
 
   /**
-   * Ellenőrzi, hogy van-e elegendő anyagi előny a játékban, hogy folytatódjon.
-   * Ha egyik félnek nincs elég anyaga (például csak királya van), akkor
+   * Ellenőrzi, hogy van-e elegendő bábu a játékban, hogy folytatódjon.
+   * Ha egyik félnek nincs elég bábuja (például csak királya van), akkor
    * döntetlen.
    * 
-   * @return true, ha nincs elegendő anyagi előny, egyébként false
+   * @return true, ha nincs elegendő bábu, egyébként false
    */
   public boolean isInsufficientMaterial() {
     int whiteMaterial = 0;
@@ -359,7 +364,7 @@ public class Board {
   }
 
   /**
-   * Ellenőrzi, hogy a megadott színű király lépett-e már.
+   * Ellenőrzi, hogy a megadott színű király lépett-e már a játék során.
    * 
    * @param color a vizsgálandó szín
    * @return true, ha a király már lépett, egyébként false
@@ -369,11 +374,11 @@ public class Board {
   }
 
   /**
-   * Ellenőrzi, hogy a megadott színű játékos egyik tornyának lépése megtörtént-e.
+   * Ellenőrzi, hogy a megadott színű játékos egyik bástyája lépett e már a játék sorn.
    * 
    * @param color     a vizsgálandó szín
-   * @param rightRook a jobb oldalra eső torony (true - jobb, false - bal)
-   * @return true, ha a torony már lépett, egyébként false
+   * @param rightRook a jobb oldalra eső bástya (true - jobb, false - bal)
+   * @return true, ha a bástya már lépett, egyébként false
    */
   public boolean hasRookMoved(Piece.Color color, boolean rightRook) {
     if (color == Piece.Color.WHITE) {
@@ -384,12 +389,12 @@ public class Board {
   }
 
   /**
-   * Ellenőrzi, hogy a megadott színű játékos tud-e kastlerezni a megadott
-   * toronnyal.
+   * Ellenőrzi, hogy a megadott színű játékos tud-e sáncolni a megadott
+   * bástyával.
    * 
    * @param color   a vizsgálandó szín
-   * @param rookCol a torony oszlopának indexe
-   * @return true, ha a kastlizás lehetséges, egyébként false
+   * @param rookCol a bástya oszlopának indexe
+   * @return true, ha a sáncolás lehetséges, egyébként false
    */
   public boolean canCastle(Piece.Color color, int rookCol) {
     if (color == Piece.Color.WHITE) {
@@ -402,7 +407,7 @@ public class Board {
   /**
    * Ellenőrzi, hogy a megadott lépés érvényes-e a táblán.
    * A lépés csak akkor érvényes, ha az adott figura típusának megfelelő, és nem
-   * vezet a király sakkba.
+   * vezeti a királyt sakkba.
    * 
    * @param originCol a kiinduló oszlop indexe
    * @param originRow a kiinduló sor indexe
@@ -444,7 +449,7 @@ public class Board {
   /**
    * Végrehajtja a megadott lépést a táblán, beleértve a speciális lépéseket, mint
    * a sáncolás.
-   * Ha szükséges, előlépteti a gyalogot.
+   * Ha szükséges, előlépteti a gyalogot vezérré.
    * 
    * @param originCol a kiinduló oszlop indexe
    * @param originRow a kiinduló sor indexe
@@ -453,7 +458,7 @@ public class Board {
    */
   public void performMove(int originCol, int originRow, int targetCol, int targetRow) {
     Piece piece = this.getPiece(originRow, originCol);
-
+    if(piece == null) return;
     if (piece.getType() == Piece.PieceType.KING && Math.abs(targetCol - originCol) == 2) {
       int rookCol = (targetCol > originCol) ? 7 : 0;
       int rookTargetCol = (targetCol > originCol) ? targetCol - 1 : targetCol + 1;
@@ -477,9 +482,7 @@ public class Board {
   }
 
   /**
-   * Előlépteti a gyalogot a megfelelő figurává, ha az elérte a tábla végét.
-   * A gyalog előléptethető bármilyen nemtörpítő figurává, itt például vezért
-   * készítünk.
+   * Előlépteti a gyalogot vezérré, ha az elérte a tábla végét.
    * 
    * @param row   a gyalog célhelye
    * @param col   a gyalog célhelye

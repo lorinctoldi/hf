@@ -13,8 +13,8 @@ class PlayerTest {
     void testConstructorAndGetters() {
         Player player = new Player("Magnus Carlsen", 2847);
 
-        assertEquals("Magnus Carlsen", player.getName(), "A játékos nevének 'Magnus Carlsen'-nek kell lennie.");
-        assertEquals(2847, player.getElo(), "A játékos ELO értékének 2847-nek kell lennie.");
+        assertEquals("Magnus Carlsen", player.getName());
+        assertEquals(2847, player.getElo());
     }
 
     /**
@@ -25,7 +25,7 @@ class PlayerTest {
     void testNegativeElo() {
         Player player = new Player("Fischer", -100);
 
-        assertEquals(-100, player.getElo(), "A játékos ELO értékének -100-nak kell lennie.");
+        assertEquals(-100, player.getElo());
     }
 
     /**
@@ -36,6 +36,6 @@ class PlayerTest {
     void testEmptyName() {
         Player player = new Player("", 1500);
 
-        assertEquals("", player.getName(), "A játékos neve üres string legyen.");
+        assertEquals("", player.getName());
     }
 }

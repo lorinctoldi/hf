@@ -9,13 +9,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class FormTest {
     /**
    * Teszteli az alapértelmezett konstruktor működését.
-   * Az alapértelmezett név üres string, az alapértelmezett Elo-érték pedig 0 kell legyen.
+   * Az alapértelmezett név üres string, az alapértelmezett ELO-érték pedig 0 kell legyen.
    */
   @Test
   void testDefaultConstructor() {
     Form form = new Form();
-    assertEquals("", form.getName(), "Alapértelmezett név üres string kell legyen.");
-    assertEquals(0, form.getElo(), "Alapértelmezett ELO 0 kell legyen");
+    assertEquals("", form.getName());
+    assertEquals(0, form.getElo());
   }
 
     /**
@@ -26,7 +26,7 @@ class FormTest {
   void testSetName() {
     Form form = new Form();
     form.setName("Lorenzo Toldio");
-    assertEquals("Lorenzo Toldio", form.getName(), "A nevet belehet állítani set-ter metódussal.");
+    assertEquals("Lorenzo Toldio", form.getName());
   }
 
     /**
@@ -37,7 +37,7 @@ class FormTest {
   void testSetElo() {
     Form form = new Form();
     form.setElo(1500);
-    assertEquals(1500, form.getElo(), "Az ELO-t belehet állítani set-ter metódussal.");
+    assertEquals(1500, form.getElo());
   }
 
     /**
@@ -49,7 +49,7 @@ class FormTest {
     Form form = new Form();
     form.setName("Lorenzo Toldio");
     form.setElo(2000);
-    assertEquals("Lorenzo Toldio", form.getName(), "A nevet belehet állítani set-ter metódussal.");
-    assertEquals(2000, form.getElo(), "Az ELO-t belehet állítani set-ter metódussal.");
+    assertEquals("Lorenzo Toldio", form.getName());
+    assertEquals(2000, form.getElo());
   }
 }

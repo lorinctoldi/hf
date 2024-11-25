@@ -74,8 +74,7 @@ public class BoardController {
     }
 
     /**
-     * Eseménykezelő beállítása a táblán, hogy reagáljon az egérnyomásra és
-     * -felengedésre.
+     * Eseménykezelő beállítása a táblán, hogy reagáljon az egérnyomásra és felengedésre.
      */
     private void handleMousePressed(MouseEvent e) {
         Point point = e.getPoint();

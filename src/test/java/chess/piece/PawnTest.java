@@ -44,7 +44,7 @@ class PawnTest {
     }
 
     /**
-     * Teszteli, hogy a gyalog képes elfogni egy ellenfél bábút.
+     * Teszteli, hogy a gyalog képes levenni egy ellenfél bábút.
      * Ellenőrzi, hogy a gyalog helyesen végrehajtja az elfogást átlós mozgás során.
      */
     @Test
@@ -91,8 +91,7 @@ class PawnTest {
 
     /**
      * Teszteli a gyalog előléptetését (promócióját).
-     * Ellenőrzi, hogy a gyalog átlépésekor megfelelő bábuvá léphet elő, mint
-     * például a királynő.
+     * Ellenőrzi, hogy a gyalog átlépésekor megfelelő bábuvá lép elő.
      */
     @Test
     void testPawnPromotion() {

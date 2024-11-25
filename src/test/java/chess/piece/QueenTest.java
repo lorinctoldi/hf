@@ -74,7 +74,7 @@ class QueenTest {
     }
 
     /**
-     * Teszteli, hogy a királynő képes-e elfogni egy ellenfelet.
+     * Teszteli, hogy a királynő képes-e levenni egy ellenfelet.
      */
     @Test
     void testCaptureOpponent() {
@@ -82,7 +82,7 @@ class QueenTest {
     }
 
     /**
-     * Teszteli, hogy a királynő nem tudja-e elfogni a saját bábuját.
+     * Teszteli, hogy a királynő nem tudja-e levenni a saját bábuját.
      */
     @Test
     void testCaptureFriendly() {
