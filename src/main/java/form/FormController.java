@@ -22,7 +22,7 @@ public class FormController {
             String eloText = view.getEloInput();
 
             if (name.isEmpty()) {
-                JOptionPane.showMessageDialog(view, "Name cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(view, "A név nem lehet üres!", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 try {
                     int elo = Integer.parseInt(eloText);
@@ -30,7 +30,7 @@ public class FormController {
                     model.setElo(elo);
                     appController.newGame(name, elo);
                 } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(view, "ELO must be a valid integer!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(view, "Az ELO szám formátumú kell legyen!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

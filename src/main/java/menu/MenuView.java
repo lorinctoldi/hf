@@ -23,7 +23,7 @@ public MenuView(Menu model) {
             JButton button = new JButton(option);
             button.setAlignmentX(Component.CENTER_ALIGNMENT);
             button.setForeground(new Color(148, 148, 148));
-            button.setFont(new Font("Arial", Font.PLAIN, 24));
+            button.setFont(new Font("Arial", Font.PLAIN, 18));
 
             // Set the button background color and make it opaque
             button.setBackground(new Color(57, 55, 51)); // Button background color (adjust as needed)
@@ -31,7 +31,7 @@ public MenuView(Menu model) {
             button.setBorderPainted(false); // Remove the border to avoid default white background around text
             button.setUI(new BasicButtonUI()); // Override default button UI to ensure consistent behavior
 
-            Dimension buttonSize = new Dimension(260, 50); // Adjust width (200) and height (50) as needed
+            Dimension buttonSize = new Dimension(260, 40); // Adjust width (200) and height (50) as needed
             button.setPreferredSize(buttonSize);
             button.setMinimumSize(buttonSize);
             button.setMaximumSize(buttonSize);
