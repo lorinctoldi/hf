@@ -2,6 +2,7 @@ package move;
 
 import javax.swing.*;
 import java.awt.*;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -17,6 +18,8 @@ public class MoveController {
     this.moves = new ArrayList<>();
     movePanel = new JPanel();
     movePanel.setLayout(new BoxLayout(movePanel, BoxLayout.Y_AXIS));
+    movePanel.setOpaque(true);  // Ensure the panel is opaque so that the background color is visible
+    movePanel.setBackground(new Color(57, 55, 51));
   }
 
   public void addMove(int originCol, int originRow, int targetCol, int targetRow) {
@@ -29,7 +32,7 @@ public class MoveController {
   private void repaint() {
     movePanel.removeAll();
     for (Move move : moves) {
-      MoveView moveView = new MoveView(move.toString());
+      MoveView moveView = new MoveView(move.toString(), moves.indexOf(move));
       moveView.addMoveClickListener(e -> {
         if (listener != null) {
           listener.onMoveClicked(moves.indexOf(move));
@@ -42,14 +45,23 @@ public class MoveController {
     movePanel.repaint();
 
     JScrollPane parentScrollPane = (JScrollPane) movePanel.getParent().getParent();
-    parentScrollPane.getVerticalScrollBar().setValue(parentScrollPane.getVerticalScrollBar().getMaximum());
+    SwingUtilities.invokeLater(() -> {
+      JScrollBar verticalScrollBar = parentScrollPane.getVerticalScrollBar();
+      verticalScrollBar.setValue(verticalScrollBar.getMaximum());
+    });
   }
 
   public JScrollPane getView() {
     JScrollPane scrollPane = new JScrollPane(movePanel);
-    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-    scrollPane.setPreferredSize(new Dimension(300, 300));
-    movePanel.setBackground(Color.GREEN);
+    scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    
+    // Set vertical scrollbar to appear as needed
+    scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+    scrollPane.setPreferredSize(new Dimension(300, 200));
+    scrollPane.setMaximumSize(new Dimension(300, 200));
+    scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+    scrollPane.setBackground(new Color(57, 55, 51));
+    scrollPane.setOpaque(true);    
     return scrollPane;
   }
 
