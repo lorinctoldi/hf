@@ -223,17 +223,29 @@ public class BoardController {
             }
             return;
         }
+
         Random random = new Random(possibleMoves.size());
         int[] chosenMove = possibleMoves.get(random.nextInt(possibleMoves.size()));
 
-        // Perform the move
-        int originCol = chosenMove[0];
-        int originRow = chosenMove[1];
-        int targetCol = chosenMove[2];
-        int targetRow = chosenMove[3];
-
-        gameController.addMove(originCol, originRow, targetCol, targetRow);
-        performMove(originCol, originRow, targetCol, targetRow);
+        Timer timer = new Timer(1000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Perform the move
+                int originCol = chosenMove[0];
+                int originRow = chosenMove[1];
+                int targetCol = chosenMove[2];
+                int targetRow = chosenMove[3];
+    
+                gameController.addMove(originCol, originRow, targetCol, targetRow);
+                performMove(originCol, originRow, targetCol, targetRow);
+    
+                // Stop the timer after the move
+                ((Timer) e.getSource()).stop();
+            }
+        });
+    
+        timer.setRepeats(false); // Ensure the timer only runs once
+        timer.start(); // Start the timer
     }
 
     public boolean isMate() {
